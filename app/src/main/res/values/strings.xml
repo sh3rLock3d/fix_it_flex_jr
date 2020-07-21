@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">fix it flex jr</string>
+    <string name="play">Start Game</string>
+    <string name="help">How To Play</string>
+    <string name="settingsLabel">Setting</string>
+    <string name="ExitLabel">Exit</string>
+</resources>
