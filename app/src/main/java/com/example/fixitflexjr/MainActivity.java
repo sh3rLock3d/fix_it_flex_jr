@@ -9,7 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
-    private static MediaPlayer player;
+    private static MediaPlayer gameSong;
 
     // Method to start activity for Help button
     public void showHelpScreen(View view) {
@@ -27,27 +27,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        player = MediaPlayer.create(this, R.raw.game_song);
-        player.setVolume(100, 100);
-        player.setLooping(true);
-        player.start();
+        gameSong = MediaPlayer.create(this, R.raw.fix_it_felix_jr_music);
+        gameSong.setVolume(100, 100);
+        gameSong.setLooping(true);
+        gameSong.start();
     }
 
-    public static MediaPlayer getPlayer() {
-        return player;
+    public static MediaPlayer getGameSong() {
+        return gameSong;
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        player.pause();
+        gameSong.pause();
     }
 
     @Override
     public void onResume() {
         Log.i("info", "MainActivity onResume");
         super.onResume();
-        player.start();
+        gameSong.start();
     }
 
     public void showSettingScreen(View view) {
@@ -55,6 +55,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Exit(View view) {
-
+        finish();
     }
 }
