@@ -20,7 +20,8 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     private boolean canDraw = true;
 
     private Paint paint;
-    private Bitmap[] felixMovingRight, felixMovingLeft, flexNormalRight, FlexNormalLeft;
+    private Bitmap[] felixMovingRight, felixMovingLeft, felixNormalRight, felixNormalLeft, felixWin
+            , felixFixingLeft, felixFixingRight, felixFalling;
     // todo enter all other bitmaps
 
     private int totalFrame = 4;
@@ -286,8 +287,6 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         int felixSize = screenWidth/17;
         felixSize = (felixSize / 5) * 5;
 
-
-
         felixMovingLeft = new Bitmap[4]; // 7 image frames for right direction
         felixMovingLeft[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.felixMovingLeft0), felixSize, felixSize, false);
@@ -297,6 +296,57 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                 getResources(), R.drawable.felixMovingLeft2), felixSize, felixSize, false);
         felixMovingLeft[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.felixMovingLeft3), felixSize, felixSize, false);
+
+        felixMovingRight = new Bitmap[4];
+        felixMovingRight[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixMovingRight0), felixSize, felixSize, false);
+        felixMovingRight[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixMovingRight1), felixSize, felixSize, false);
+        felixMovingRight[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixMovingRight2), felixSize, felixSize, false);
+        felixMovingRight[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixMovingRight3), felixSize, felixSize, false);
+
+        felixNormalLeft = new Bitmap[1];
+        felixNormalRight[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixNormalLeft0), felixSize, felixSize, false);
+
+        felixNormalRight = new Bitmap[1];
+        felixNormalRight[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixNormalRight0), felixSize, felixSize, false);
+
+        felixWin = new Bitmap[6];
+        felixWin[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixWin0), felixSize, felixSize, false);
+        felixWin[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixWin1), felixSize, felixSize, false);
+        felixWin[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixWin2), felixSize, felixSize, false);
+        felixWin[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixWin3), felixSize, felixSize, false);
+        felixWin[4] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixWin4), felixSize, felixSize, false);
+        felixWin[5] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixWin5), felixSize, felixSize, false);
+
+        felixFixingLeft = new Bitmap[2];
+        felixFixingLeft[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixFixingLeft0), felixSize, felixSize, false);
+        felixFixingLeft[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixFixingLeft1), felixSize, felixSize, false);
+
+        felixFixingRight = new Bitmap[2];
+        felixFixingRight[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixFixingRight0), felixSize, felixSize, false);
+        felixFixingRight[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixFixingRight1), felixSize, felixSize, false);
+
+        felixFalling = new Bitmap[2];
+        felixFalling[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixFalling0), felixSize, felixSize, false);
+        felixFalling[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixFalling1), felixSize, felixSize, false);
+
 
     }
 
