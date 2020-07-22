@@ -22,6 +22,8 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     private Paint paint;
     private Bitmap[] felixMovingRight, felixMovingLeft, felixNormalRight, felixNormalLeft, felixWin
             , felixFixingLeft, felixFixingRight, felixFalling;
+
+    private Bitmap[] ralphClimbing, ralphDemolishing, ralphMoving;
     // todo enter all other bitmaps
 
     private int totalFrame = 4;
@@ -348,6 +350,26 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                 getResources(), R.drawable.felixFalling1), felixSize, felixSize, false);
 
 
+        int ralphSize = screenWidth/17;
+        ralphSize = (ralphSize / 5) * 5;
+
+        ralphClimbing = new Bitmap[2];
+        ralphClimbing[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.ralphClimbing0), ralphSize, ralphSize, false);
+        ralphClimbing[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.ralphClimbing1), ralphSize, ralphSize, false);
+
+        ralphDemolishing = new Bitmap[2];
+        ralphDemolishing[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.ralphDemolishing0), ralphSize, ralphSize, false);
+        ralphDemolishing[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.ralphDemolishing1), ralphSize, ralphSize, false);
+
+        ralphMoving = new Bitmap[2];
+        ralphMoving[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.ralphMoving0), ralphSize, ralphSize, false);
+        ralphMoving[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.ralphMoving1), ralphSize, ralphSize, false);
     }
 
 }
