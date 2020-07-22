@@ -282,12 +282,12 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     }
 
     private void loadBitmapImages() {
-        // Scales the sprites based on screen
-        int felixSize = screenWidth/17;        // Size of Pacman & Ghost
-        felixSize = (felixSize / 5) * 5;      // Keep it a multiple of 5
+
+        int felixSize = screenWidth/17;
+        felixSize = (felixSize / 5) * 5;
 
 
-        // Add bitmap images of right arrow indicators
+
         felixMovingLeft = new Bitmap[4]; // 7 image frames for right direction
         felixMovingLeft[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.felixMovingLeft0), felixSize, felixSize, false);
