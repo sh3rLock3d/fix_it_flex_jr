@@ -2,13 +2,14 @@ package com.example.fixitflexjr;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     private static MediaPlayer gameSong;
 
     // Method to start activity for Help button
