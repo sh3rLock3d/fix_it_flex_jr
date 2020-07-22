@@ -21,7 +21,9 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
 
     private Paint paint;
     private Bitmap[] felixMovingRight, felixMovingLeft, felixNormalRight, felixNormalLeft, felixWin
-            , felixFixingLeft, felixFixingRight, felixFalling;
+            , felixFixingLeft, felixFixingRight, felixFalling, building, birdLeft, birdRight, brick
+            ,cake ,cloud ,niceLander, window, doubleDoor, glasses, bigWindow, door, flowerpot, roof,
+            bush, config, initialMenu, life, spritesSinFondo;
 
     private Bitmap[] ralphClimbing, ralphDemolishing, ralphMoving;
     // todo enter all other bitmaps
@@ -370,6 +372,184 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                 getResources(), R.drawable.ralphMoving0), ralphSize, ralphSize, false);
         ralphMoving[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.ralphMoving1), ralphSize, ralphSize, false);
+
+
+        int buildingSize = screenWidth/17;
+        buildingSize = (buildingSize / 5) * 5;
+
+        building = new Bitmap[1];
+        building[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.building0), buildingSize, buildingSize, false);
+
+        int birdSize = screenWidth/17;
+        birdSize = (birdSize / 5) * 5;
+
+        birdLeft = new Bitmap[2];
+        birdLeft[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.birdLeft0), birdSize, birdSize, false);
+        birdLeft[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.birdLeft1), birdSize, birdSize, false);
+
+        birdRight = new Bitmap[2];
+        birdRight[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.birdRight0), birdSize, birdSize, false);
+        birdRight[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.birdRight1), birdSize, birdSize, false);
+
+        int brickSize = screenWidth/17;
+        brickSize = (brickSize / 5) * 5;
+
+        brick = new Bitmap[2];
+        brick[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.brick0), brickSize, brickSize, false);
+        brick[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.brick1), brickSize, brickSize, false);
+
+        int cakeSize = screenWidth/17;
+        cakeSize = (cakeSize / 5) * 5;
+
+        cake = new Bitmap[2];
+        cake[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.cake0), cakeSize, cakeSize, false);
+        brick[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.cake1), cakeSize, cakeSize, false);
+
+        int cloudSize = screenWidth/17;
+        cloudSize = (cloudSize / 5) * 5;
+
+        cloud = new Bitmap[1];
+        cloud[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.cloud0), cloudSize, cloudSize, false);
+
+        int niceLanderSize = screenWidth/17;
+        niceLanderSize = (niceLanderSize / 5) * 5;
+
+        niceLander = new Bitmap[2];
+        niceLander[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.nicelander0), niceLanderSize, niceLanderSize, false);
+        niceLander[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.nicelander1), niceLanderSize, niceLanderSize, false);
+
+        int windowSize = screenWidth/17;
+        windowSize = (windowSize / 5) * 5;
+
+        window = new Bitmap[2];
+        window[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.window0), windowSize, windowSize, false);
+        window[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.window1), windowSize, windowSize, false);
+
+        int doubleDoorSize = screenWidth/17;
+        doubleDoorSize = (doubleDoorSize / 5) * 5;
+
+        doubleDoor = new Bitmap[4];
+        doubleDoor[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.doubledoor0), doubleDoorSize, doubleDoorSize, false);
+        doubleDoor[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.doubledoor1), doubleDoorSize, doubleDoorSize, false);
+        doubleDoor[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.doubledoor2), doubleDoorSize, doubleDoorSize, false);
+        doubleDoor[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.doubledoor3), doubleDoorSize, doubleDoorSize, false);
+
+        int glassesSize = screenWidth/17;
+        glassesSize = (glassesSize / 5) * 5;
+
+        glasses = new Bitmap[7];
+        glasses[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.glasses0), glassesSize, glassesSize, false);
+        glasses[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.glasses1), glassesSize, glassesSize, false);
+        glasses[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.glasses2), glassesSize, glassesSize, false);
+        glasses[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.glasses3), glassesSize, glassesSize, false);
+        glasses[4] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.glasses4), glassesSize, glassesSize, false);
+        glasses[5] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.glasses5), glassesSize, glassesSize, false);
+        glasses[6] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.glasses6), glassesSize, glassesSize, false);
+
+        int flowerpotSize = screenWidth/17;
+        flowerpotSize = (flowerpotSize / 5) * 5;
+
+        flowerpot = new Bitmap[1];
+        flowerpot[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.flowerpot), flowerpotSize, flowerpotSize, false);
+
+        int roofSize = screenWidth/17;
+        roofSize = (roofSize / 5) * 5;
+
+        roof = new Bitmap[1];
+        roof[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.roof), roofSize, roofSize, false);
+
+        int bigWindowSize = screenWidth/17;
+        bigWindowSize = (bigWindowSize / 5) * 5;
+
+        bigWindow = new Bitmap[5];
+        bigWindow[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.bigwindow0), bigWindowSize, bigWindowSize, false);
+        bigWindow[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.bigwindow1), bigWindowSize, bigWindowSize, false);
+        bigWindow[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.bigwindow2), bigWindowSize, bigWindowSize, false);
+        bigWindow[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.bigwindow3), bigWindowSize, bigWindowSize, false);
+        bigWindow[4] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.bigwindow4), bigWindowSize, bigWindowSize, false);
+
+        int doorSize = screenWidth/17;
+        doorSize = (doorSize / 5) * 5;
+
+        door = new Bitmap[5];
+        door[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.door0), doorSize, doorSize, false);
+        door[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.door1), doorSize, doorSize, false);
+        door[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.door2), doorSize, doorSize, false);
+        door[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.door3), doorSize, doorSize, false);
+        door[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.door4), doorSize, doorSize, false);
+
+        int bushSize = screenWidth/17;
+        bushSize = (bushSize / 5) * 5;
+
+        bush = new Bitmap[1];
+        bush[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.bush), bushSize, bushSize, false);
+
+        int configSize = screenWidth/17;
+        configSize = (configSize / 5) * 5;
+
+        config = new Bitmap[1];
+        config[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.config), configSize, configSize, false);
+
+        int initialMenuSize = screenWidth/17;
+        initialMenuSize = (initialMenuSize / 5) * 5;
+
+        initialMenu = new Bitmap[1];
+        roof[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.initial_menu), initialMenuSize, initialMenuSize, false);
+
+        int lifeSize = screenWidth/17;
+        lifeSize = (lifeSize / 5) * 5;
+
+        life = new Bitmap[1];
+        life[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.life), lifeSize, lifeSize, false);
+
+        int spritesSinFondoSize = screenWidth/17;
+        spritesSinFondoSize = (spritesSinFondoSize / 5) * 5;
+
+        spritesSinFondo = new Bitmap[1];
+        spritesSinFondo[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.sprites_sin_fondo), spritesSinFondoSize, spritesSinFondoSize, false);
+
     }
 
 }
