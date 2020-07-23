@@ -1,7 +1,6 @@
 package com.example.fixitflexjr;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -21,21 +20,21 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
 
     private Paint paint;
     private Bitmap[] felixMovingRight, felixMovingLeft, felixNormalRight, felixNormalLeft, felixWin
-            , felixFixingLeft, felixFixingRight, felixFalling, building, birdLeft, birdRight, brick
+            , felixFixingLeft, felixFixingRight, felixFalling, birdLeft, birdRight, brick
             ,cake ,cloud ,niceLander, window, doubleDoor, glasses, bigWindow, door, flowerpot, roof,
             bush, config, initialMenu, life, spritesSinFondo;
 
     private Bitmap[] ralphClimbing, ralphDemolishing, ralphMoving;
-    // todo enter all other bitmaps
+    private Bitmap building;
 
-    private int totalFrame = 4;
+
+    int xPosFlex, yPosFlex;
+
+
     private int currentFelixFrame = 0;
     private int currentRalphFrame = 0;
     private long frameTicker;
-    private int xPosFelix;
-    private int yPosFelix;
-    private int xPosRalph;
-    private int yPosRalph;
+
 
     private float x1, x2, y1, y2;
 
@@ -52,7 +51,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         super(context);
         holder = getHolder();
         holder.addCallback(this);
-        frameTicker = 1000/totalFrame;
+        frameTicker = 1000/4;
         paint = new Paint();
         paint.setColor(Color.WHITE);
         DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -60,7 +59,13 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         screenHeight = metrics.heightPixels;
 
         // todo initialize ...
-        // blockSize
+
+        blockSize = (int)(screenWidth/6.5);
+        blockSize = (blockSize / 5) * 5;
+
+        initializeLocations();
+        xPosFlex = locations[3][0][0];
+        yPosFlex = locations[3][0][1];
 
         loadBitmapImages();
         Log.i("info", "Constructor");
@@ -78,17 +83,17 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
             if (canvas != null) {
                 canvas.drawColor(Color.BLACK);
                 drawMap(canvas);
-                drawArrowIndicators(canvas);
+                //drawArrowIndicators(canvas);
 
                 updateFrame(System.currentTimeMillis());
 
-                moveRalph(canvas);
+                //moveRalph(canvas);
 
 
                 moveFlex(canvas);
 
                 //Update current and high scores
-                updateScores(canvas);
+                //updateScores(canvas);
                 holder.unlockCanvasAndPost(canvas);
             }
         }
@@ -116,62 +121,101 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         //canvas.drawBitmap(ghostBitmap, xPosRalph, yPosRalph, paint);
     }
 
-
+    FLexAction fLexAction = FLexAction.normalLeft;
+    FLexAction fLexNextAction = FLexAction.normalLeft;
 
     public void moveFlex(Canvas canvas) {
+        // todo set fLexAction based on fLexNextAction
+        // todo for example if he is in the 5th window of a row he catt go any righter
+        fLexAction = fLexNextAction;
         drawFelix(canvas);
-    }
 
-    private void drawArrowIndicators(Canvas canvas) {
-        switch(nextDirection) {
-            case(0):
-                // up
+        // Depending on the direction move the position of pacman
+        switch (fLexAction){
+            case movingRight:
                 break;
-            case(1):
-                //right
+            case movingLeft:
                 break;
-            case(2):
-                //down
+            case normalRight:
                 break;
-            case(3):
-                //left
+            case normalLeft:
                 break;
-            default:
+            case fixingLeft:
+                break;
+            case fixingRight:
+                break;
+            case falling:
                 break;
         }
+        /*
+        if (direction == 0) {
+            yPosFlex += -blockSize/15;
+        } else if (direction == 1) {
+            xPosFlex += blockSize/15;
+        } else if (direction == 2) {
+            yPosFlex += blockSize/15;
+        } else if (direction == 3) {
+            xPosFlex += -blockSize/15;
+        }
+        */
 
     }
-
 
     public void drawFelix(Canvas canvas) {
-        switch (viewDirection) {
-            case (0):
-
-
-                break;
-            case (1):
-                //canvas.drawBitmap(felixMovingRight[currentFelixFrame], xPosFelix, yPosFelix, paint);
-
-                break;
-            case (3):
-
-                break;
-            default:
-
-                break;
-        }
+        Bitmap[] felixActionBitmap = getFelixActionBitmap();
+        canvas.drawBitmap(felixMovingRight[currentFelixFrame], xPosFlex, yPosFlex, paint);
     }
+
+    private Bitmap[] getFelixActionBitmap() {
+        switch (fLexAction){
+            case movingRight:
+                return felixMovingRight;
+            case movingLeft:
+                return felixMovingLeft;
+            case normalRight:
+                return felixNormalRight;
+            case normalLeft:
+                return felixNormalLeft;
+            case fixingLeft:
+                return felixFixingLeft;
+            case fixingRight:
+                return felixFixingRight;
+            case falling:
+                return felixFalling;
+            default:
+                return null;
+        }
+
+    }
+
+
+
 
     // Method to draw map layout
     public void drawMap(Canvas canvas) {
-        //
+        canvas.drawBitmap(building, 0, 0, paint);
+        // windows
+        for(int i = 0; i < windowsLife.length; i++ ){
+            for(int j = 0; j < windowsLife[0].length; j++ ){
+                int thisWindowsLife = windowsLife[i][j];
+                if (thisWindowsLife == 1){
+                    canvas.drawBitmap(window[0], locations[i][j][0], locations[i][j][1], paint);
+                } else {
+                    canvas.drawBitmap(window[1], locations[i][j][0], locations[i][j][1], paint);
+                }
+            }
+        }
+
     }
 
     Runnable longPressed = new Runnable() {
         public void run() {
+            /*
             Log.i("info", "LongPress");
             Intent pauseIntent = new Intent(getContext(), PauseActivity.class);
             getContext().startActivity(pauseIntent);
+             */
+            windowsLife[0][0] = 5;
         }
     };
 
@@ -213,26 +257,34 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         // Checks which axis has the greater distance
         // in order to see which direction the swipe is
         // going to be (buffering of direction)
+        // TODO initialize nextActionFlex
         if (Math.abs(yDiff) > Math.abs(xDiff)) {
             if (yDiff < 0) {
                 nextDirection = 0;
+                currentFelixFrame = 0;
             } else if (yDiff > 0) {
                 nextDirection = 2;
+                currentFelixFrame = 0;
             }
         } else {
             if (xDiff < 0) {
                 nextDirection = 3;
+                fLexNextAction = FLexAction.movingLeft;
+                currentFelixFrame = 0;
             } else if (xDiff > 0) {
                 nextDirection = 1;
+                fLexNextAction = FLexAction.normalLeft;
+                currentFelixFrame = 0;
             }
         }
+
     }
 
     // Check to see if we should update the current frame
     // based on time passed so the animation won't be too
     // quick and look bad
     private void updateFrame(long gameTime) {
-
+        int totalFrame = getFelixActionBitmap().length;
         // If enough time has passed go to next frame
         if (gameTime > frameTicker + (totalFrame * 30)) {
             frameTicker = gameTime;
@@ -374,12 +426,8 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                 getResources(), R.drawable.ralphmoving1), ralphSize, ralphSize, false);
 
 
-        int buildingSize = screenWidth/17;
-        buildingSize = (buildingSize / 5) * 5;
-
-        building = new Bitmap[1];
-        building[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.building0), buildingSize, buildingSize, false);
+        building = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.building0), screenWidth, screenHeight, false);
 
         int birdSize = screenWidth/17;
         birdSize = (birdSize / 5) * 5;
@@ -430,13 +478,13 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         niceLander[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.nicelander1), niceLanderSize, niceLanderSize, false);
 
-        int windowSize = screenWidth/17;
+        int windowSize = blockSize;
         windowSize = (windowSize / 5) * 5;
 
         window = new Bitmap[2];
         window[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.window0), windowSize, windowSize, false);
-        window[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+        window[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.window1), windowSize, windowSize, false);
 
         int doubleDoorSize = screenWidth/17;
@@ -549,6 +597,39 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         spritesSinFondo = new Bitmap[1];
         spritesSinFondo[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.sprites_sin_fondo), spritesSinFondoSize, spritesSinFondoSize, false);
+
+    }
+
+    int[][] windowsLife = {
+            {1, 1, 1, 1},
+            {1, 1, 1, 1},
+            {1, 1, 1, 1},
+            {1, 1, 1, 1},
+            {1, 1, 1, 1}
+    };
+
+    int[][][] locations;
+
+    private void initializeLocations(){
+        //TODO fix measures
+        locations = new int[5][4][2];
+        int xThreshold = (int)(screenWidth/ 7);
+        int yThreshold = (int)(screenHeight/ 3);
+        int xDist = (int)(screenWidth/6.5);
+        int yDist = (int)(screenHeight/8.5);
+
+        for(int i = 0; i < 5; i++){
+            for(int j = 0; j < 4; j++){
+                int x = i * xDist + xThreshold, y = j * yDist + yThreshold;
+                locations[i][j][0] = x;
+                locations[i][j][1] = y;
+            }
+        }
+    }
+
+
+
+    public static void control(){
 
     }
 
