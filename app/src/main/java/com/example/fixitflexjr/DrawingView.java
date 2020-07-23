@@ -340,7 +340,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
 
     private void loadBitmapImages() {
 
-        int felixSize = screenWidth/17;
+        int felixSize = screenWidth/7;
         felixSize = (felixSize / 5) * 5;
 
         felixMovingLeft = new Bitmap[4]; // 7 image frames for right direction
@@ -620,9 +620,21 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
 
         for(int i = 0; i < 5; i++){
             for(int j = 0; j < 4; j++){
-                int x = i * xDist + xThreshold, y = j * yDist + yThreshold;
-                locations[i][j][0] = x;
-                locations[i][j][1] = y;
+                if(i == 0 || i == 1) {
+                    int x = i * xDist + xThreshold, y = j * yDist + yThreshold;
+                    int xThr = (int)(yThreshold / 11);
+                    locations[i][j][0] = x - xThr;
+                    locations[i][j][1] = y;
+                } else if (i == 2) {
+                    int x = i * xDist + xThreshold, y = j * yDist + yThreshold;
+                    int xThr = (int)(yThreshold / 23);
+                    locations[i][j][0] = x - xThr;
+                    locations[i][j][1] = y;
+                } else {
+                    int x = i * xDist + xThreshold, y = j * yDist + yThreshold;
+                    locations[i][j][0] = x;
+                    locations[i][j][1] = y;
+                }
             }
         }
     }
