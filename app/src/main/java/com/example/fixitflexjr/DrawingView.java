@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.Callback {
@@ -48,6 +49,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     public static int LONG_PRESS_TIME=750;
     private int currentScore = 0;           //Current game score
     final Handler handler = new Handler();
+    int lifeOfFlex;
 
     public DrawingView(Context context) {
         super(context);
@@ -61,7 +63,8 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         screenHeight = metrics.heightPixels;
 
         // initialize
-
+        bricks = new ArrayList<>();
+        lifeOfFlex = 3;
         blockSize = (int)(screenWidth/6.5);
         blockSize = (blockSize / 5) * 5;
 
@@ -95,20 +98,75 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
             if (canvas != null) {
                 canvas.drawColor(Color.BLACK);
                 drawMap(canvas);
-                //drawArrowIndicators(canvas);
 
                 updateFrame(System.currentTimeMillis());
 
                 moveRalph(canvas);
 
-
                 moveFlex(canvas);
 
-                //Update current and high scores
-                //updateScores(canvas);
+                moveBricks(canvas);
+
+                checkWinAndCheckCollisionOfFlexAndBricks();
+                updateScores(canvas);
                 holder.unlockCanvasAndPost(canvas);
             }
         }
+    }
+
+    private void checkWinAndCheckCollisionOfFlexAndBricks() {
+        boolean collision = false;
+        for(Integer[] thisBrick: bricks){
+            int x = thisBrick[0];
+            int y = thisBrick[1];
+            if (xPosFlex < x &&
+                    x < (xPosFlex + felixNormalLeft[0].getWidth()) &&
+                    yPosFlex < y &&
+                    y < (yPosFlex + felixNormalLeft[0].getHeight()))
+            {
+                collision = true;
+                break;
+            }
+
+        }
+        boolean isWin = true;
+        for(int i = 0; i < windowsLife.length; i++) {
+            for (int j = 0; j < windowsLife[0].length; j++){
+                if(windowsLife[i][j] != 1){
+                    isWin = false;
+                }
+            }
+        }
+        if(isWin){
+            win();
+        }else if(collision){
+            bricks.clear();
+            fLexAction = FLexAction.falling;
+            currentFelixFrame = 0;
+            lifeOfFlex--;
+            if (lifeOfFlex == 0){
+                lost();
+            } else {
+                MediaPlayer actionSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.loselifesound);
+                actionSong.setVolume(100, 100);
+                actionSong.setLooping(false);
+                actionSong.start();
+            }
+        }
+    }
+
+    private void moveBricks(Canvas canvas) {
+        ArrayList<Integer[]> removed = new ArrayList<>();
+        for(Integer[] thisBrick: bricks){
+            int x = thisBrick[0];
+            int y = thisBrick[1];
+            thisBrick[1] += 5;
+            canvas.drawBitmap(brick[0], x, y, paint);
+            if(y > screenHeight * (0.75)){
+                removed.add(thisBrick);
+            }
+        }
+        bricks.removeAll(removed);
     }
 
     public void updateScores(Canvas canvas) {
@@ -120,13 +178,13 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
             g.setHighScore(currentScore);
         }
 
-        String formattedHighScore = String.format("%05d", highScore);
-        String hScore = "High Score : " + formattedHighScore;
-        canvas.drawText(hScore, 0, 2*blockSize - 10, paint);
 
-        String formattedScore = String.format("%05d", currentScore);
-        String score = "Score : " + formattedScore;
-        canvas.drawText(score, 11 * blockSize, 2 * blockSize - 10, paint);
+
+        // todo draw life bitmap
+        String formattedlife = String.format("%05d", lifeOfFlex);
+        String scoree = "life : " + formattedlife;
+        canvas.drawText(scoree, 10, 100, paint);
+
     }
 
 
@@ -137,7 +195,9 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
 
         switch (ralphAction){
             case moving:
-                if (Math.abs(ralphDest - xPosRalph) < 15) {
+                int dif = (int)Math.signum(ralphDest - xPosRalph) * 5;
+                xPosRalph += dif;
+                if (Math.abs(ralphDest - xPosRalph) < 10) {
                     ralphAction = RalphAction.demolishing;
                     currentRalphFrame = 0;
                 }
@@ -151,6 +211,19 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                     currentRalphFrame = 0;
                 }
         }
+    }
+    ArrayList<Integer[]> bricks;
+    private void demoloshBrick(int xPosRalph, int currentRalphFrame) {
+        Integer[] result = new Integer[2];
+        result[1] = yPosRalph + ralphDemolishing[0].getHeight();
+        result[0] = xPosRalph + ralphDemolishing[0].getWidth();
+        if (currentRalphFrame == 0 || currentRalphFrame == 2) {
+            result[0]-= ralphDemolishing[0].getWidth();
+        }
+        if (currentRalphFrame == 2 || currentRalphFrame == 3){
+            return;
+        }
+        bricks.add(result);
     }
 
     private void drawRalph(Canvas canvas) {
@@ -370,6 +443,15 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                 }
                 break;
             case falling:
+                yPosFlex += 5;
+                if(yPosFlex > screenHeight * 0.80){
+                    currentFelixFrame = 0;
+                    fLexAction = FLexAction.normalRight;
+                    xflexDest = 3;
+                    yFlexDest = 3;
+                    xPosFlex = locations[3][3][0];
+                    yPosFlex = locations[3][3][1];
+                }
                 break;
             case jumpingLeft:
                 yPosFlex -= flexMovingDistance / 15;
@@ -606,6 +688,8 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     // Check to see if we should update the current frame
     // based on time passed so the animation won't be too
     // quick and look bad
+
+    long ralphFrameTicker = 100 / 4;
     private void updateFrame(long gameTime) {
         int totalFrame = getFelixActionBitmap().length;
         // If enough time has passed go to next frame
@@ -619,12 +703,16 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                 currentFelixFrame = 0;
             }
         }
-        if (gameTime > frameTicker + (50)) {
-            Log.d("salam", "updateFrame: " + currentRalphFrame);
+        if (gameTime > ralphFrameTicker +  4 * 30) {
+            ralphFrameTicker = gameTime;
+            if (ralphAction == RalphAction.demolishing) {
+                demoloshBrick(xPosRalph, currentRalphFrame);
+            }
             currentRalphFrame++;
             if (currentRalphFrame >= getRalphActionBitmap().length) {
                 currentRalphFrame = 0;
             }
+
         }
     }
 
@@ -709,16 +797,24 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         felixWin[5] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.felixwin5), felixSize, felixSize, false);
 
-        felixFixingLeft = new Bitmap[2];
+        felixFixingLeft = new Bitmap[4];
         felixFixingLeft[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.felixfixingleft0), felixSize, felixSize, false);
         felixFixingLeft[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.felixfixingleft1), felixSize, felixSize, false);
+        felixFixingLeft[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixfixingleft0), felixSize, felixSize, false);
+        felixFixingLeft[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixfixingleft1), felixSize, felixSize, false);
 
-        felixFixingRight = new Bitmap[2];
+        felixFixingRight = new Bitmap[4];
         felixFixingRight[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.felixfixingright0), felixSize, felixSize, false);
         felixFixingRight[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixfixingright1), felixSize, felixSize, false);
+        felixFixingRight[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixfixingright0), felixSize, felixSize, false);
+        felixFixingRight[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.felixfixingright1), felixSize, felixSize, false);
 
         felixFalling = new Bitmap[2];
@@ -731,24 +827,35 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         int ralphSize = screenWidth/5;
         ralphSize = (ralphSize / 5) * 5;
 
-        ralphClimbing = new Bitmap[2];
+        ralphClimbing = new Bitmap[4];
         ralphClimbing[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.ralphclimbing0), ralphSize, ralphSize, false);
         ralphClimbing[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.ralphclimbing1), ralphSize, ralphSize, false);
+        ralphClimbing[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.ralphclimbing0), ralphSize, ralphSize, false);
+        ralphClimbing[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.ralphclimbing1), ralphSize, ralphSize, false);
 
-        ralphDemolishing = new Bitmap[2];
+        ralphDemolishing = new Bitmap[4];
         ralphDemolishing[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.ralphdemolishing0), ralphSize, ralphSize, false);
         ralphDemolishing[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.ralphdemolishing1), ralphSize, ralphSize, false);
+        ralphDemolishing[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.ralphdemolishing0), ralphSize, ralphSize, false);
+        ralphDemolishing[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.ralphdemolishing1), ralphSize, ralphSize, false);
 
-        ralphMoving = new Bitmap[2];
+        ralphMoving = new Bitmap[4];
         ralphMoving[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.ralphmoving0), ralphSize, ralphSize, false);
         ralphMoving[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.ralphmoving1), ralphSize, ralphSize, false);
-
+        ralphMoving[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.ralphmoving0), ralphSize, ralphSize, false);
+        ralphMoving[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.ralphmoving1), ralphSize, ralphSize, false);
 
         building = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.building0), screenWidth, screenHeight, false);
@@ -935,7 +1042,6 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     int[][][] locations;
 
     private void initializeLocations(){
-        //TODO fix measures
         locations = new int[5][4][2];
         int xThreshold = (int)(screenWidth/ 7);
         int yThreshold = (int)(screenHeight/ 3);
@@ -963,5 +1069,15 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         }
     }
 
+    private void win(){
+
+    }
+
+    private void lost(){
+
+    }
+
 }
 
+// todo fixing should take 4 frame
+// todo use both bricks
