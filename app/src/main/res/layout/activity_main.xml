@@ -30,25 +30,43 @@
             android:layout_height="65dp"
             android:onClick="showPlayScreen"
             android:text="@string/play"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginBottom="5dp"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:textColor="#113740"
+            android:background="@drawable/buttonbackgound"/>
 
         <Button
             android:layout_width="175dp"
             android:layout_height="65dp"
             android:onClick="showHelpScreen"
-            android:text="@string/help"/>
+            android:text="@string/help"
+            android:layout_marginBottom="5dp"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:textColor="#113740"
+            android:background="@drawable/buttonbackgound"/>
 
         <Button
             android:layout_width="175dp"
             android:layout_height="65dp"
             android:text="@string/settingsLabel"
-            android:onClick="showSettingScreen"/>
+            android:onClick="showSettingScreen"
+            android:layout_marginBottom="5dp"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:textColor="#113740"
+            android:background="@drawable/buttonbackgound"/>
         <Button
             android:layout_width="175dp"
             android:layout_height="65dp"
             android:text="@string/ExitLabel"
             android:onClick="Exit"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginBottom="5dp"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:textColor="#113740"
+            android:background="@drawable/buttonbackgound"/>
     </LinearLayout>
 
 </RelativeLayout>
