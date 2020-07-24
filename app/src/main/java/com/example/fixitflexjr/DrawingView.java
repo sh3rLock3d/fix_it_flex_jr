@@ -14,6 +14,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.Random;
+
 public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.Callback {
     private Thread thread;
     private SurfaceHolder holder;
@@ -30,7 +32,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
 
 
     int xPosFlex, yPosFlex;
-
+    int xPosRalph, yPosRalph, ralphDest;
 
     private int currentFelixFrame = 0;
     private int currentRalphFrame = 0;
@@ -40,7 +42,6 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     private float x1, x2, y1, y2;
 
     private int nextDirection = 4;
-    private int viewDirection = 2;
 
     private int screenWidth, screenHeight;
     private int blockSize;
@@ -65,12 +66,20 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         blockSize = (blockSize / 5) * 5;
 
         initializeLocations();
+        loadBitmapImages();
+
         xflexDest = 3;
         yFlexDest = 3;
         xPosFlex = locations[3][3][0];
         yPosFlex = locations[3][3][1];
 
-        loadBitmapImages();
+        //
+        xPosRalph = screenWidth / 2;
+        yPosRalph = screenHeight / 5;
+        ralphAction = RalphAction.moving;
+        ralphDest = (new Random()).nextInt(screenWidth - ralphMoving[0].getWidth());
+
+
         Log.i("info", "Constructor");
     }
 
@@ -90,7 +99,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
 
                 updateFrame(System.currentTimeMillis());
 
-                //moveRalph(canvas);
+                moveRalph(canvas);
 
 
                 moveFlex(canvas);
@@ -120,8 +129,45 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         canvas.drawText(score, 11 * blockSize, 2 * blockSize - 10, paint);
     }
 
+
+    RalphAction ralphAction;
     public void moveRalph(Canvas canvas) {
-        //canvas.drawBitmap(ghostBitmap, xPosRalph, yPosRalph, paint);
+
+        drawRalph(canvas);
+
+        switch (ralphAction){
+            case moving:
+                if (Math.abs(ralphDest - xPosRalph) < 15) {
+                    ralphAction = RalphAction.demolishing;
+                    currentRalphFrame = 0;
+                }
+                break;
+            case climbing:
+                break;
+            case demolishing:
+                if (currentRalphFrame == ralphDemolishing.length - 1) {
+                    ralphDest = (new Random()).nextInt(screenWidth - ralphMoving[0].getWidth());
+                    ralphAction = RalphAction.moving;
+                    currentRalphFrame = 0;
+                }
+        }
+    }
+
+    private void drawRalph(Canvas canvas) {
+        Bitmap[] ralphActionBitmap = getRalphActionBitmap();
+        canvas.drawBitmap(ralphActionBitmap[currentRalphFrame], xPosRalph, yPosRalph, paint);
+    }
+
+    private Bitmap[] getRalphActionBitmap() {
+        switch (ralphAction){
+            case moving:
+                return ralphMoving;
+            case climbing:
+                return ralphClimbing;
+            case demolishing:
+                return ralphDemolishing;
+        }
+        return new Bitmap[0];
     }
 
     FLexAction fLexAction = FLexAction.normalLeft;
@@ -487,7 +533,6 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
             Intent pauseIntent = new Intent(getContext(), PauseActivity.class);
             getContext().startActivity(pauseIntent);
              */
-            windowsLife[0][0] = 5;
         }
     };
 
@@ -575,8 +620,9 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
             }
         }
         if (gameTime > frameTicker + (50)) {
+            Log.d("salam", "updateFrame: " + currentRalphFrame);
             currentRalphFrame++;
-            if (currentRalphFrame >= 7) {
+            if (currentRalphFrame >= getRalphActionBitmap().length) {
                 currentRalphFrame = 0;
             }
         }
@@ -682,7 +728,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                 getResources(), R.drawable.felixfalling1), felixSize, felixSize, false);
 
 
-        int ralphSize = screenWidth/17;
+        int ralphSize = screenWidth/5;
         ralphSize = (ralphSize / 5) * 5;
 
         ralphClimbing = new Bitmap[2];
@@ -915,12 +961,6 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                 }
             }
         }
-    }
-
-
-
-    public static void control(){
-
     }
 
 }
