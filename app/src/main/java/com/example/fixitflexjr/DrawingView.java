@@ -122,23 +122,137 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     }
 
     FLexAction fLexAction = FLexAction.normalLeft;
-    FLexAction fLexNextAction = FLexAction.normalLeft;
 
+
+    private int flexMovingDistance = 50; // todo
     public void moveFlex(Canvas canvas) {
         // todo set fLexAction based on fLexNextAction
         // todo for example if he is in the 5th window of a row he catt go any righter
-        fLexAction = fLexNextAction;
-        drawFelix(canvas);
+        // todo currentFelixFrame = 0;
 
-        // Depending on the direction move the position of pacman
+        switch (nextDirection){
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+        }
+        // todo initialize flexMovingDistance
         switch (fLexAction){
             case movingRight:
+                switch (nextDirection){
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        fLexAction = FLexAction.movingLeft;
+                        currentFelixFrame = 0;
+                        nextDirection = 4;
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                }
                 break;
             case movingLeft:
+                switch (nextDirection){
+                    case 0:
+                        break;
+                    case 1:
+                        fLexAction = FLexAction.movingRight;
+                        currentFelixFrame = 0;
+                        nextDirection = 4;
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                }
                 break;
             case normalRight:
+                switch (nextDirection){
+                    case 0:
+                        ///////
+                        fLexAction = FLexAction.jumpingRight;
+                        currentFelixFrame = 0;
+                        nextDirection = 4;
+                        flexMovingDistance = getFlexDistance(0);
+                        break;
+                    case 1:
+                        fLexAction = FLexAction.movingRight;
+                        currentFelixFrame = 0;
+                        nextDirection = 4;
+                        flexMovingDistance = getFlexDistance(1);
+                        break;
+                    case 2:
+                        fLexAction = FLexAction.downwardRight;
+                        currentFelixFrame = 0;
+                        nextDirection = 4;
+                        flexMovingDistance = getFlexDistance(2);
+                        break;
+                    case 3:
+                        fLexAction = FLexAction.normalLeft;
+                        currentFelixFrame = 0;
+                        nextDirection = 4;
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        fLexAction = FLexAction.fixingRight;
+                        currentFelixFrame = 0;
+                        nextDirection = 4;
+                        break;
+                }
                 break;
             case normalLeft:
+                switch (nextDirection){
+                    case 0:
+                        ///////
+                        fLexAction = FLexAction.jumpingLeft;
+                        currentFelixFrame = 0;
+                        nextDirection = 4;
+                        flexMovingDistance = getFlexDistance(0);
+                        break;
+                    case 1:
+                        fLexAction = FLexAction.normalRight;
+                        currentFelixFrame = 0;
+                        nextDirection = 4;
+                        break;
+                    case 2:
+                        fLexAction = FLexAction.downWardLeft;
+                        currentFelixFrame = 0;
+                        nextDirection = 4;
+                        flexMovingDistance = getFlexDistance(2);
+                        break;
+                    case 3:
+                        fLexAction = FLexAction.movingLeft;
+                        currentFelixFrame = 0;
+                        nextDirection = 4;
+                        flexMovingDistance = getFlexDistance(3);
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        fLexAction = FLexAction.fixingLeft;
+                        currentFelixFrame = 0;
+                        nextDirection = 4;
+                        break;
+                }
                 break;
             case fixingLeft:
                 break;
@@ -146,7 +260,68 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                 break;
             case falling:
                 break;
+            case jumpingLeft:
+                break;
+            case jumpingRight:
+                break;
+            case downwardRight:
+                break;
+            case downWardLeft:
+                break;
         }
+
+
+
+
+
+        drawFelix(canvas);
+
+
+        switch (fLexAction){
+            case movingRight:
+                xPosFlex += flexMovingDistance / 15;
+                if (flexLocationIsValid()){
+                    fLexAction = FLexAction.normalRight;
+                    currentFelixFrame = 0;
+                }
+                break;
+            case movingLeft:
+                xPosFlex -= flexMovingDistance / 15;
+                if (flexLocationIsValid()){
+                    fLexAction = FLexAction.normalLeft;
+                    currentFelixFrame = 0;
+                }
+                break;
+            case normalRight:
+                break;
+            case normalLeft:
+                break;
+            case fixingLeft:
+                if (currentFelixFrame == felixFixingLeft.length - 1){
+                    fLexAction = FLexAction.normalLeft;
+                    currentFelixFrame = 0;
+                     // todo fix window
+                }
+                break;
+            case fixingRight:
+                if (currentFelixFrame == felixFixingRight.length - 1){
+                    fLexAction = FLexAction.normalRight;
+                    currentFelixFrame = 0;
+                    // todo fix window
+                }
+                break;
+            case falling:
+                break;
+            case jumpingLeft:
+                break;
+            case jumpingRight:
+                break;
+            case downwardRight:
+                break;
+            case downWardLeft:
+                break;
+        }
+
         /*
         if (direction == 0) {
             yPosFlex += -blockSize/15;
@@ -161,9 +336,63 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
 
     }
 
+
+    private int getFlexDistance(int direction){
+        for(int i = 0; i < 5; i++) {
+            for (int j = 0; j < 4; j++) {
+                int x = locations[i][j][0], y = locations[i][j][1];
+                if (x == xPosFlex && y == yPosFlex){
+                    switch (direction){
+                        case 0:
+                            if (j == 0){
+                                return 0;
+                            } else {
+                                return Math.abs(locations[i][j][1] - locations[i][j - 1][1]);
+                            }
+                        case 1:
+                            if (i == 4){
+                                return 0;
+                            } else {
+                                return Math.abs(locations[i][j][0] - locations[i+1][j][0]);
+                            }
+                        case 2:
+                            if (j == 3){
+                                return 0;
+                            } else {
+                                return Math.abs(locations[i][j][1] - locations[i][j + 1][1]);
+                            }
+                        case 3:
+                            if (i == 0){
+                                return 0;
+                            } else {
+                                int r = locations[i][j][0] - locations[i-1][j][0];
+                                Log.i("salam", "getFlexDistance: " + r);
+                                return Math.abs(locations[i][j][0] - locations[i-1][j][0]);
+                            }
+                        default:
+                            return 0;
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+    private boolean flexLocationIsValid() {
+        for(int i = 0; i < 5; i++) {
+            for (int j = 0; j < 4; j++) {
+                int x = locations[i][j][0], y = locations[i][j][1];
+                if (x == xPosFlex && y == yPosFlex){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public void drawFelix(Canvas canvas) {
         Bitmap[] felixActionBitmap = getFelixActionBitmap();
-        canvas.drawBitmap(felixMovingRight[currentFelixFrame], xPosFlex, yPosFlex, paint);
+        canvas.drawBitmap(felixActionBitmap[currentFelixFrame], xPosFlex, yPosFlex, paint);
     }
 
     private Bitmap[] getFelixActionBitmap() {
@@ -182,6 +411,14 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                 return felixFixingRight;
             case falling:
                 return felixFalling;
+            case jumpingLeft: // todo
+                return null;
+            case jumpingRight:
+                return null;
+            case downwardRight:
+                return null;
+            case downWardLeft:
+                return null;
             default:
                 return null;
         }
@@ -253,28 +490,31 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         // 2 means going down
         // 3 means going left
         // 4 means stop moving, look at move function
+        // 5 means fixing
 
         // Checks which axis has the greater distance
         // in order to see which direction the swipe is
         // going to be (buffering of direction)
-        // TODO initialize nextActionFlex
+
+
+        //todo if not normal return
+
+        if (Math.abs(yDiff) <  20 && Math.abs(xDiff) < 20) {
+            //pressed
+            nextDirection = 5;
+            return;
+        }
         if (Math.abs(yDiff) > Math.abs(xDiff)) {
             if (yDiff < 0) {
                 nextDirection = 0;
-                currentFelixFrame = 0;
             } else if (yDiff > 0) {
                 nextDirection = 2;
-                currentFelixFrame = 0;
             }
         } else {
             if (xDiff < 0) {
                 nextDirection = 3;
-                fLexNextAction = FLexAction.movingLeft;
-                currentFelixFrame = 0;
             } else if (xDiff > 0) {
                 nextDirection = 1;
-                fLexNextAction = FLexAction.normalLeft;
-                currentFelixFrame = 0;
             }
         }
 

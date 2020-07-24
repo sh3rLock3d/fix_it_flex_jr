@@ -1,5 +1,5 @@
 package com.example.fixitflexjr;
 
 public enum FLexAction{
-    movingRight, movingLeft, normalRight, normalLeft,fixingLeft, fixingRight, falling
+    movingRight, movingLeft, normalRight, normalLeft,fixingLeft, fixingRight, falling, jumpingLeft, jumpingRight, downwardRight, downWardLeft
 }
