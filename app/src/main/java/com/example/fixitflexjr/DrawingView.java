@@ -336,7 +336,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
 
     }
 
-
+    int xflexDest, yFlexDest;
     private int getFlexDistance(int direction){
         for(int i = 0; i < 5; i++) {
             for (int j = 0; j < 4; j++) {
@@ -347,26 +347,32 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                             if (j == 0){
                                 return 0;
                             } else {
+                                xflexDest = i;
+                                yFlexDest = j-1;
                                 return Math.abs(locations[i][j][1] - locations[i][j - 1][1]);
                             }
                         case 1:
                             if (i == 4){
                                 return 0;
                             } else {
+                                xflexDest = i + 1;
+                                yFlexDest = j;
                                 return Math.abs(locations[i][j][0] - locations[i+1][j][0]);
                             }
                         case 2:
                             if (j == 3){
                                 return 0;
                             } else {
+                                xflexDest = i;
+                                yFlexDest = j+1;
                                 return Math.abs(locations[i][j][1] - locations[i][j + 1][1]);
                             }
                         case 3:
                             if (i == 0){
                                 return 0;
                             } else {
-                                int r = locations[i][j][0] - locations[i-1][j][0];
-                                Log.i("salam", "getFlexDistance: " + r);
+                                xflexDest = i-1;
+                                yFlexDest = j;
                                 return Math.abs(locations[i][j][0] - locations[i-1][j][0]);
                             }
                         default:
@@ -378,13 +384,10 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         return 0;
     }
     private boolean flexLocationIsValid() {
-        for(int i = 0; i < 5; i++) {
-            for (int j = 0; j < 4; j++) {
-                int x = locations[i][j][0], y = locations[i][j][1];
-                if (x == xPosFlex && y == yPosFlex){
-                    return true;
-                }
-            }
+        if(Math.abs(xPosFlex - locations[xflexDest][yFlexDest][0]) < 15 && Math.abs(yPosFlex - locations[xflexDest][yFlexDest][1]) < 15) {
+            yPosFlex = locations[xflexDest][yFlexDest][1];
+            xPosFlex = locations[xflexDest][yFlexDest][0];
+            return true;
         }
 
         return false;
