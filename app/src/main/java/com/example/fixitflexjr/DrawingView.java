@@ -69,7 +69,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         blockWSize = (int)(screenWidth/6.5);
         blockWSize = (blockWSize / 5) * 5;
 
-        blockHSize = (int)(screenHeight/9);
+        blockHSize = (int)(screenHeight/11);
         blockHSize = (blockHSize / 5) * 5;
 
         initializeLocations();
@@ -872,6 +872,13 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         felixFalling[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.felixfalling1), felixWSize, felixHSize, false);
 
+        felixMovingUp = new Bitmap[1];
+        felixMovingUp[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixup), felixWSize, felixHSize, false);
+
+        felixMovingDown = new Bitmap[1];
+        felixMovingDown[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.felixdown), felixWSize, felixHSize, false);
 
         int ralphWSize = screenWidth/5;
         ralphWSize = (ralphWSize / 5) * 5;
@@ -982,11 +989,27 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         int windowHSize = blockHSize;
         windowHSize = (windowHSize / 5) * 5;
 
-        window = new Bitmap[2];
+        window = new Bitmap[10];
         window[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.window0), windowWSize, windowHSize, false);
         window[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.window1), windowWSize, windowHSize, false);
+        window[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.window2), windowWSize, windowHSize, false);
+        window[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.window3), windowWSize, windowHSize, false);
+        window[4] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.window4), windowWSize, windowHSize, false);
+        window[5] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.window5), windowWSize, windowHSize, false);
+        window[6] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.window6), windowWSize, windowHSize, false);
+        window[7] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.window7), windowWSize, windowHSize, false);
+        window[8] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.window8), windowWSize, windowHSize, false);
+        window[9] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.window9), windowWSize, windowHSize, false);
 
         int doubleDoorWSize = screenWidth/17;
         doubleDoorWSize = (doubleDoorWSize / 5) * 5;
@@ -1148,7 +1171,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     private void initializeLocations(){
         locations = new int[5][4][2];
         int xThreshold = (int)(screenWidth/ 7);
-        int yThreshold = (int)(screenHeight/ 3);
+        int yThreshold = (int)(screenHeight/ 3.1);
         int xDist = (int)(screenWidth/6.5);
         int yDist = (int)(screenHeight/8.5);
 
