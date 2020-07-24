@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -58,14 +59,16 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         screenWidth = metrics.widthPixels;
         screenHeight = metrics.heightPixels;
 
-        // todo initialize ...
+        // initialize
 
         blockSize = (int)(screenWidth/6.5);
         blockSize = (blockSize / 5) * 5;
 
         initializeLocations();
-        xPosFlex = locations[3][0][0];
-        yPosFlex = locations[3][0][1];
+        xflexDest = 3;
+        yFlexDest = 3;
+        xPosFlex = locations[3][3][0];
+        yPosFlex = locations[3][3][1];
 
         loadBitmapImages();
         Log.i("info", "Constructor");
@@ -124,12 +127,9 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     FLexAction fLexAction = FLexAction.normalLeft;
 
 
-    private int flexMovingDistance = 50; // todo
+    private int flexMovingDistance;
     public void moveFlex(Canvas canvas) {
-        // todo set fLexAction based on fLexNextAction
-        // todo for example if he is in the 5th window of a row he catt go any righter
-        // todo currentFelixFrame = 0;
-
+        /*
         switch (nextDirection){
             case 0:
                 break;
@@ -144,7 +144,9 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
             case 5:
                 break;
         }
-        // todo initialize flexMovingDistance
+         */
+        // todo there is duplicate code clean it later
+        MediaPlayer actionSong;
         switch (fLexAction){
             case movingRight:
                 switch (nextDirection){
@@ -192,6 +194,10 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                         currentFelixFrame = 0;
                         nextDirection = 4;
                         flexMovingDistance = getFlexDistance(0);
+                        actionSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.jumpsound);
+                        actionSong.setVolume(100, 100);
+                        actionSong.setLooping(false);
+                        actionSong.start();
                         break;
                     case 1:
                         fLexAction = FLexAction.movingRight;
@@ -204,6 +210,10 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                         currentFelixFrame = 0;
                         nextDirection = 4;
                         flexMovingDistance = getFlexDistance(2);
+                        actionSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.jumpsound);
+                        actionSong.setVolume(100, 100);
+                        actionSong.setLooping(false);
+                        actionSong.start();
                         break;
                     case 3:
                         fLexAction = FLexAction.normalLeft;
@@ -227,6 +237,10 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                         currentFelixFrame = 0;
                         nextDirection = 4;
                         flexMovingDistance = getFlexDistance(0);
+                        actionSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.jumpsound);
+                        actionSong.setVolume(100, 100);
+                        actionSong.setLooping(false);
+                        actionSong.start();
                         break;
                     case 1:
                         fLexAction = FLexAction.normalRight;
@@ -238,6 +252,10 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                         currentFelixFrame = 0;
                         nextDirection = 4;
                         flexMovingDistance = getFlexDistance(2);
+                        actionSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.jumpsound);
+                        actionSong.setVolume(100, 100);
+                        actionSong.setLooping(false);
+                        actionSong.start();
                         break;
                     case 3:
                         fLexAction = FLexAction.movingLeft;
@@ -270,12 +288,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                 break;
         }
 
-
-
-
-
         drawFelix(canvas);
-
 
         switch (fLexAction){
             case movingRight:
@@ -300,40 +313,59 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                 if (currentFelixFrame == felixFixingLeft.length - 1){
                     fLexAction = FLexAction.normalLeft;
                     currentFelixFrame = 0;
-                     // todo fix window
+                     fixWindow(xflexDest, yFlexDest);
                 }
                 break;
             case fixingRight:
                 if (currentFelixFrame == felixFixingRight.length - 1){
                     fLexAction = FLexAction.normalRight;
                     currentFelixFrame = 0;
-                    // todo fix window
+                    fixWindow(xflexDest, yFlexDest);
                 }
                 break;
             case falling:
                 break;
             case jumpingLeft:
+                yPosFlex -= flexMovingDistance / 15;
+                if (flexLocationIsValid()){
+                    fLexAction = FLexAction.normalLeft;
+                    currentFelixFrame = 0;
+                }
                 break;
             case jumpingRight:
+                yPosFlex -= flexMovingDistance / 15;
+                if (flexLocationIsValid()){
+                    fLexAction = FLexAction.normalRight;
+                    currentFelixFrame = 0;
+                }
                 break;
             case downwardRight:
+                yPosFlex += flexMovingDistance / 15;
+                if (flexLocationIsValid()){
+                    fLexAction = FLexAction.normalRight;
+                    currentFelixFrame = 0;
+                }
                 break;
             case downWardLeft:
+                yPosFlex += flexMovingDistance / 15;
+                if (flexLocationIsValid()){
+                    fLexAction = FLexAction.normalLeft;
+                    currentFelixFrame = 0;
+                }
                 break;
         }
 
-        /*
-        if (direction == 0) {
-            yPosFlex += -blockSize/15;
-        } else if (direction == 1) {
-            xPosFlex += blockSize/15;
-        } else if (direction == 2) {
-            yPosFlex += blockSize/15;
-        } else if (direction == 3) {
-            xPosFlex += -blockSize/15;
-        }
-        */
+    }
 
+    private void fixWindow(int x, int y) {
+        windowsLife[x][y] += 1;
+        if (windowsLife[x][y] == window.length){
+            windowsLife[x][y] -= 1;
+        }
+        MediaPlayer gameSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.fixsound);
+        gameSong.setVolume(100, 100);
+        gameSong.setLooping(false);
+        gameSong.start();
     }
 
     int xflexDest, yFlexDest;
@@ -415,13 +447,13 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
             case falling:
                 return felixFalling;
             case jumpingLeft: // todo
-                return null;
+                return felixFalling;
             case jumpingRight:
-                return null;
+                return felixFalling;
             case downwardRight:
-                return null;
+                return felixFalling;
             case downWardLeft:
-                return null;
+                return felixFalling;
             default:
                 return null;
         }
@@ -438,7 +470,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         for(int i = 0; i < windowsLife.length; i++ ){
             for(int j = 0; j < windowsLife[0].length; j++ ){
                 int thisWindowsLife = windowsLife[i][j];
-                if (thisWindowsLife == 1){
+                if (thisWindowsLife == 0){
                     canvas.drawBitmap(window[0], locations[i][j][0], locations[i][j][1], paint);
                 } else {
                     canvas.drawBitmap(window[1], locations[i][j][0], locations[i][j][1], paint);
@@ -499,8 +531,11 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         // in order to see which direction the swipe is
         // going to be (buffering of direction)
 
+        if (fLexAction == FLexAction.normalRight || fLexAction == FLexAction.normalLeft){
 
-        //todo if not normal return
+        } else {
+            return;
+        }
 
         if (Math.abs(yDiff) <  20 && Math.abs(xDiff) < 20) {
             //pressed
@@ -844,11 +879,11 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     }
 
     int[][] windowsLife = {
-            {1, 1, 1, 1},
-            {1, 1, 1, 1},
-            {1, 1, 1, 1},
-            {1, 1, 1, 1},
-            {1, 1, 1, 1}
+            {0, 0, 0, 0},
+            {0, 0, 0, 0},
+            {0, 0, 0, 0},
+            {0, 0, 0, 0},
+            {0, 0, 0, 0}
     };
 
     int[][][] locations;
