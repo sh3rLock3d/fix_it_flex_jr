@@ -23,8 +23,8 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     private boolean canDraw = true;
 
     private Paint paint;
-    private Bitmap[] felixMovingRight, felixMovingLeft, felixNormalRight, felixNormalLeft, felixWin
-            , felixFixingLeft, felixFixingRight, felixFalling, birdLeft, birdRight, brick
+    private Bitmap[] felixMovingRight, felixMovingLeft, felixNormalRight, felixNormalLeft, felixMovingUp
+            ,felixMovingDown ,felixWin , felixFixingLeft, felixFixingRight, felixFalling, birdLeft, birdRight, brick
             ,cake ,cloud ,niceLander, window, doubleDoor, glasses, bigWindow, door, flowerpot, roof,
             bush, config, initialMenu, life, spritesSinFondo;
 
@@ -45,7 +45,8 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     private int nextDirection = 4;
 
     private int screenWidth, screenHeight;
-    private int blockSize;
+    private int blockWSize;
+    private int blockHSize;
     public static int LONG_PRESS_TIME=750;
     private int currentScore = 0;           //Current game score
     final Handler handler = new Handler();
@@ -65,8 +66,11 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         // initialize
         bricks = new ArrayList<>();
         lifeOfFlex = 3;
-        blockSize = (int)(screenWidth/6.5);
-        blockSize = (blockSize / 5) * 5;
+        blockWSize = (int)(screenWidth/6.5);
+        blockWSize = (blockWSize / 5) * 5;
+
+        blockHSize = (int)(screenHeight/9);
+        blockHSize = (blockHSize / 5) * 5;
 
         initializeLocations();
         loadBitmapImages();
@@ -169,8 +173,50 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         bricks.removeAll(removed);
     }
 
+    private void moveBirdRight(Canvas canvas) {
+        ArrayList<Integer[]> removed = new ArrayList<>();
+        int iBird = 0;
+        Random random = new Random();
+        int randHeight = random.nextInt(screenHeight);
+        while (true){
+            int x = 0;
+            int y = randHeight;
+            x += 5;
+            if (iBird % 2 == 0) {
+                canvas.drawBitmap(birdRight[0], x, y, paint);
+            } else {
+                canvas.drawBitmap(birdRight[1], x, y, paint);
+            }
+            iBird++;
+            if(x > screenWidth * (0.75)){
+                break;
+            }
+        }
+    }
+
+    private void moveBirdLeft(Canvas canvas) {
+        ArrayList<Integer[]> removed = new ArrayList<>();
+        int iBird = 0;
+        Random random = new Random();
+        int randHeight = random.nextInt(screenHeight);
+        while (true){
+            int x = screenWidth;
+            int y = randHeight;
+            x -= 5;
+            if (iBird % 2 == 0) {
+                canvas.drawBitmap(birdLeft[0], x, y, paint);
+            } else {
+                canvas.drawBitmap(birdLeft[1], x, y, paint);
+            }
+            iBird++;
+            if(x > screenWidth * (0.75)){
+                break;
+            }
+        }
+    }
+
     public void updateScores(Canvas canvas) {
-        paint.setTextSize(blockSize);
+        paint.setTextSize(blockWSize);
 
         Globals g = Globals.getInstance();
         int highScore = g.getHighScore();
@@ -752,282 +798,340 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
 
     private void loadBitmapImages() {
 
-        int felixSize = screenWidth/7;
-        felixSize = (felixSize / 5) * 5;
+        int felixWSize = screenWidth/7;
+        felixWSize = (felixWSize / 5) * 5;
+
+        int felixHSize = screenHeight/9;
+        felixHSize = (felixHSize / 5) * 5;
 
         felixMovingLeft = new Bitmap[4]; // 7 image frames for right direction
         felixMovingLeft[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixmovingleft0), felixSize, felixSize, false);
+                getResources(), R.drawable.felixmovingleft0), felixWSize, felixHSize, false);
         felixMovingLeft[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixmovingleft1), felixSize, felixSize, false);
+                getResources(), R.drawable.felixmovingleft1), felixWSize, felixHSize, false);
         felixMovingLeft[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixmovingleft2), felixSize, felixSize, false);
+                getResources(), R.drawable.felixmovingleft2), felixWSize, felixHSize, false);
         felixMovingLeft[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixmovingleft3), felixSize, felixSize, false);
+                getResources(), R.drawable.felixmovingleft3), felixWSize, felixHSize, false);
 
         felixMovingRight = new Bitmap[4];
         felixMovingRight[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixmovingright0), felixSize, felixSize, false);
+                getResources(), R.drawable.felixmovingright0), felixWSize, felixHSize, false);
         felixMovingRight[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixmovingright1), felixSize, felixSize, false);
+                getResources(), R.drawable.felixmovingright1), felixWSize, felixHSize, false);
         felixMovingRight[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixmovingright2), felixSize, felixSize, false);
+                getResources(), R.drawable.felixmovingright2), felixWSize, felixHSize, false);
         felixMovingRight[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixmovingright3), felixSize, felixSize, false);
+                getResources(), R.drawable.felixmovingright3), felixWSize, felixHSize, false);
 
         felixNormalLeft = new Bitmap[1];
         felixNormalLeft[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixnormalleft0), felixSize, felixSize, false);
+                getResources(), R.drawable.felixnormalleft0), felixWSize, felixHSize, false);
 
         felixNormalRight = new Bitmap[1];
         felixNormalRight[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixnormalright0), felixSize, felixSize, false);
+                getResources(), R.drawable.felixnormalright0), felixWSize, felixHSize, false);
 
         felixWin = new Bitmap[6];
         felixWin[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixwin0), felixSize, felixSize, false);
+                getResources(), R.drawable.felixwin0), felixWSize, felixHSize, false);
         felixWin[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixwin1), felixSize, felixSize, false);
+                getResources(), R.drawable.felixwin1), felixWSize, felixHSize, false);
         felixWin[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixwin2), felixSize, felixSize, false);
+                getResources(), R.drawable.felixwin2), felixWSize, felixHSize, false);
         felixWin[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixwin3), felixSize, felixSize, false);
+                getResources(), R.drawable.felixwin3), felixWSize, felixHSize, false);
         felixWin[4] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixwin4), felixSize, felixSize, false);
+                getResources(), R.drawable.felixwin4), felixWSize, felixHSize, false);
         felixWin[5] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixwin5), felixSize, felixSize, false);
+                getResources(), R.drawable.felixwin5), felixWSize, felixHSize, false);
 
         felixFixingLeft = new Bitmap[4];
         felixFixingLeft[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixfixingleft0), felixSize, felixSize, false);
+                getResources(), R.drawable.felixfixingleft0), felixWSize, felixHSize, false);
         felixFixingLeft[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixfixingleft1), felixSize, felixSize, false);
+                getResources(), R.drawable.felixfixingleft1), felixWSize, felixHSize, false);
         felixFixingLeft[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixfixingleft0), felixSize, felixSize, false);
+                getResources(), R.drawable.felixfixingleft0), felixWSize, felixHSize, false);
         felixFixingLeft[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixfixingleft1), felixSize, felixSize, false);
+                getResources(), R.drawable.felixfixingleft1), felixWSize, felixHSize, false);
 
         felixFixingRight = new Bitmap[4];
         felixFixingRight[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixfixingright0), felixSize, felixSize, false);
+                getResources(), R.drawable.felixfixingright0), felixWSize, felixHSize, false);
         felixFixingRight[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixfixingright1), felixSize, felixSize, false);
+                getResources(), R.drawable.felixfixingright1), felixWSize, felixHSize, false);
         felixFixingRight[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixfixingright0), felixSize, felixSize, false);
+                getResources(), R.drawable.felixfixingright0), felixWSize, felixHSize, false);
         felixFixingRight[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixfixingright1), felixSize, felixSize, false);
+                getResources(), R.drawable.felixfixingright1), felixWSize, felixHSize, false);
 
         felixFalling = new Bitmap[2];
         felixFalling[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixfalling0), felixSize, felixSize, false);
+                getResources(), R.drawable.felixfalling0), felixWSize, felixHSize, false);
         felixFalling[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.felixfalling1), felixSize, felixSize, false);
+                getResources(), R.drawable.felixfalling1), felixWSize, felixHSize, false);
 
 
-        int ralphSize = screenWidth/5;
-        ralphSize = (ralphSize / 5) * 5;
+        int ralphWSize = screenWidth/5;
+        ralphWSize = (ralphWSize / 5) * 5;
+
+        int ralphHSize = screenHeight/7;
+        ralphHSize = (ralphHSize / 5) * 5;
 
         ralphClimbing = new Bitmap[4];
         ralphClimbing[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.ralphclimbing0), ralphSize, ralphSize, false);
+                getResources(), R.drawable.ralphclimbing0), ralphWSize, ralphHSize, false);
         ralphClimbing[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.ralphclimbing1), ralphSize, ralphSize, false);
+                getResources(), R.drawable.ralphclimbing1), ralphWSize, ralphHSize, false);
         ralphClimbing[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.ralphclimbing0), ralphSize, ralphSize, false);
+                getResources(), R.drawable.ralphclimbing0), ralphWSize, ralphHSize, false);
         ralphClimbing[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.ralphclimbing1), ralphSize, ralphSize, false);
+                getResources(), R.drawable.ralphclimbing1), ralphWSize, ralphHSize, false);
 
         ralphDemolishing = new Bitmap[4];
         ralphDemolishing[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.ralphdemolishing0), ralphSize, ralphSize, false);
+                getResources(), R.drawable.ralphdemolishing0), ralphWSize, ralphHSize, false);
         ralphDemolishing[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.ralphdemolishing1), ralphSize, ralphSize, false);
+                getResources(), R.drawable.ralphdemolishing1), ralphWSize, ralphHSize, false);
         ralphDemolishing[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.ralphdemolishing0), ralphSize, ralphSize, false);
+                getResources(), R.drawable.ralphdemolishing0), ralphWSize, ralphHSize, false);
         ralphDemolishing[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.ralphdemolishing1), ralphSize, ralphSize, false);
+                getResources(), R.drawable.ralphdemolishing1), ralphWSize, ralphHSize, false);
 
         ralphMoving = new Bitmap[4];
         ralphMoving[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.ralphmoving0), ralphSize, ralphSize, false);
+                getResources(), R.drawable.ralphmoving0), ralphWSize, ralphHSize, false);
         ralphMoving[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.ralphmoving1), ralphSize, ralphSize, false);
+                getResources(), R.drawable.ralphmoving1), ralphWSize, ralphHSize, false);
         ralphMoving[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.ralphmoving0), ralphSize, ralphSize, false);
+                getResources(), R.drawable.ralphmoving0), ralphWSize, ralphHSize, false);
         ralphMoving[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.ralphmoving1), ralphSize, ralphSize, false);
+                getResources(), R.drawable.ralphmoving1), ralphWSize, ralphHSize, false);
 
         building = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.building0), screenWidth, screenHeight, false);
 
-        int birdSize = screenWidth/17;
-        birdSize = (birdSize / 5) * 5;
+        int birdWSize = screenWidth/17;
+        birdWSize = (birdWSize / 5) * 5;
+
+        int birdHSize = screenHeight/17;
+        birdHSize = (birdHSize / 5) * 5;
 
         birdLeft = new Bitmap[2];
         birdLeft[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.birdleft0), birdSize, birdSize, false);
+                getResources(), R.drawable.birdleft0), birdWSize, birdHSize, false);
         birdLeft[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.birdleft1), birdSize, birdSize, false);
+                getResources(), R.drawable.birdleft1), birdWSize, birdHSize, false);
 
         birdRight = new Bitmap[2];
         birdRight[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.birdright0), birdSize, birdSize, false);
+                getResources(), R.drawable.birdright0), birdWSize, birdHSize, false);
         birdRight[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.birdright1), birdSize, birdSize, false);
+                getResources(), R.drawable.birdright1), birdWSize, birdHSize, false);
 
-        int brickSize = screenWidth/17;
-        brickSize = (brickSize / 5) * 5;
+        int brickWSize = screenWidth/17;
+        brickWSize = (brickWSize / 5) * 5;
+
+        int brickHSize = screenHeight/27;
+        brickHSize = (brickHSize / 5) * 5;
 
         brick = new Bitmap[2];
         brick[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.brick0), brickSize, brickSize, false);
+                getResources(), R.drawable.brick0), brickWSize, brickHSize, false);
         brick[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.brick1), brickSize, brickSize, false);
+                getResources(), R.drawable.brick1), brickWSize, brickHSize, false);
 
-        int cakeSize = screenWidth/17;
-        cakeSize = (cakeSize / 5) * 5;
+        int cakeWSize = screenWidth/17;
+        cakeWSize = (cakeWSize / 5) * 5;
+
+        int cakeHSize = screenHeight/17;
+        cakeHSize = (cakeHSize / 5) * 5;
 
         cake = new Bitmap[2];
         cake[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.cake0), cakeSize, cakeSize, false);
+                getResources(), R.drawable.cake0), cakeWSize, cakeHSize, false);
         brick[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.cake1), cakeSize, cakeSize, false);
+                getResources(), R.drawable.cake1), cakeWSize, cakeHSize, false);
 
-        int cloudSize = screenWidth/17;
-        cloudSize = (cloudSize / 5) * 5;
+        int cloudWSize = screenWidth/17;
+        cloudWSize = (cloudWSize / 5) * 5;
+
+        int cloudHSize = screenHeight/17;
+        cloudHSize = (cloudHSize / 5) * 5;
 
         cloud = new Bitmap[1];
         cloud[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.cloud0), cloudSize, cloudSize, false);
+                getResources(), R.drawable.cloud0), cloudWSize, cloudHSize, false);
 
-        int niceLanderSize = screenWidth/17;
-        niceLanderSize = (niceLanderSize / 5) * 5;
+        int niceLanderWSize = screenWidth/17;
+        niceLanderWSize = (niceLanderWSize / 5) * 5;
+
+        int niceLanderHSize = screenHeight/17;
+        niceLanderHSize = (niceLanderHSize / 5) * 5;
 
         niceLander = new Bitmap[2];
         niceLander[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.nicelander0), niceLanderSize, niceLanderSize, false);
+                getResources(), R.drawable.nicelander0), niceLanderWSize, niceLanderHSize, false);
         niceLander[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.nicelander1), niceLanderSize, niceLanderSize, false);
+                getResources(), R.drawable.nicelander1), niceLanderWSize, niceLanderHSize, false);
 
-        int windowSize = blockSize;
-        windowSize = (windowSize / 5) * 5;
+        int windowWSize = blockWSize;
+        windowWSize = (windowWSize / 5) * 5;
+
+        int windowHSize = blockHSize;
+        windowHSize = (windowHSize / 5) * 5;
 
         window = new Bitmap[2];
         window[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.window0), windowSize, windowSize, false);
+                getResources(), R.drawable.window0), windowWSize, windowHSize, false);
         window[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.window1), windowSize, windowSize, false);
+                getResources(), R.drawable.window1), windowWSize, windowHSize, false);
 
-        int doubleDoorSize = screenWidth/17;
-        doubleDoorSize = (doubleDoorSize / 5) * 5;
+        int doubleDoorWSize = screenWidth/17;
+        doubleDoorWSize = (doubleDoorWSize / 5) * 5;
+
+        int doubleDoorHSize = screenHeight/17;
+        doubleDoorHSize = (doubleDoorHSize / 5) * 5;
 
         doubleDoor = new Bitmap[4];
         doubleDoor[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.doubledoor0), doubleDoorSize, doubleDoorSize, false);
+                getResources(), R.drawable.doubledoor0), doubleDoorWSize, doubleDoorHSize, false);
         doubleDoor[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.doubledoor1), doubleDoorSize, doubleDoorSize, false);
+                getResources(), R.drawable.doubledoor1), doubleDoorWSize, doubleDoorHSize, false);
         doubleDoor[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.doubledoor2), doubleDoorSize, doubleDoorSize, false);
+                getResources(), R.drawable.doubledoor2), doubleDoorWSize, doubleDoorHSize, false);
         doubleDoor[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.doubledoor3), doubleDoorSize, doubleDoorSize, false);
+                getResources(), R.drawable.doubledoor3), doubleDoorWSize, doubleDoorHSize, false);
 
-        int glassesSize = screenWidth/17;
-        glassesSize = (glassesSize / 5) * 5;
+        int glassesWSize = screenWidth/17;
+        glassesWSize = (glassesWSize / 5) * 5;
+
+        int glassesHSize = screenHeight/17;
+        glassesHSize = (glassesHSize / 5) * 5;
 
         glasses = new Bitmap[7];
         glasses[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.glasses0), glassesSize, glassesSize, false);
+                getResources(), R.drawable.glasses0), glassesWSize, glassesHSize, false);
         glasses[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.glasses1), glassesSize, glassesSize, false);
+                getResources(), R.drawable.glasses1), glassesWSize, glassesHSize, false);
         glasses[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.glasses2), glassesSize, glassesSize, false);
+                getResources(), R.drawable.glasses2), glassesWSize, glassesHSize, false);
         glasses[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.glasses3), glassesSize, glassesSize, false);
+                getResources(), R.drawable.glasses3), glassesWSize, glassesHSize, false);
         glasses[4] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.glasses4), glassesSize, glassesSize, false);
+                getResources(), R.drawable.glasses4), glassesWSize, glassesHSize, false);
         glasses[5] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.glasses5), glassesSize, glassesSize, false);
+                getResources(), R.drawable.glasses5), glassesWSize, glassesHSize, false);
         glasses[6] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.glasses6), glassesSize, glassesSize, false);
+                getResources(), R.drawable.glasses6), glassesWSize, glassesHSize, false);
 
-        int flowerpotSize = screenWidth/17;
-        flowerpotSize = (flowerpotSize / 5) * 5;
+        int flowerpotWSize = screenWidth/17;
+        flowerpotWSize = (flowerpotWSize / 5) * 5;
+
+        int flowerpotHSize = screenHeight/17;
+        flowerpotHSize = (flowerpotHSize / 5) * 5;
 
         flowerpot = new Bitmap[1];
         flowerpot[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.flowerpot), flowerpotSize, flowerpotSize, false);
+                getResources(), R.drawable.flowerpot), flowerpotWSize, flowerpotHSize, false);
 
-        int roofSize = screenWidth/17;
-        roofSize = (roofSize / 5) * 5;
+        int roofWSize = screenWidth/17;
+        roofWSize = (roofWSize / 5) * 5;
+
+        int roofHSize = screenHeight/17;
+        roofHSize = (roofHSize / 5) * 5;
 
         roof = new Bitmap[1];
         roof[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.roof), roofSize, roofSize, false);
+                getResources(), R.drawable.roof), roofWSize, roofHSize, false);
 
-        int bigWindowSize = screenWidth/17;
-        bigWindowSize = (bigWindowSize / 5) * 5;
+        int bigWindowWSize = screenWidth/17;
+        bigWindowWSize = (bigWindowWSize / 5) * 5;
+
+        int bigWindowHSize = screenHeight/17;
+        bigWindowHSize = (bigWindowHSize / 5) * 5;
 
         bigWindow = new Bitmap[5];
         bigWindow[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.bigwindow0), bigWindowSize, bigWindowSize, false);
+                getResources(), R.drawable.bigwindow0), bigWindowWSize, bigWindowHSize, false);
         bigWindow[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.bigwindow1), bigWindowSize, bigWindowSize, false);
+                getResources(), R.drawable.bigwindow1), bigWindowWSize, bigWindowHSize, false);
         bigWindow[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.bigwindow2), bigWindowSize, bigWindowSize, false);
+                getResources(), R.drawable.bigwindow2), bigWindowWSize, bigWindowHSize, false);
         bigWindow[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.bigwindow3), bigWindowSize, bigWindowSize, false);
+                getResources(), R.drawable.bigwindow3), bigWindowWSize, bigWindowHSize, false);
         bigWindow[4] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.bigwindow4), bigWindowSize, bigWindowSize, false);
+                getResources(), R.drawable.bigwindow4), bigWindowWSize, bigWindowHSize, false);
 
-        int doorSize = screenWidth/17;
-        doorSize = (doorSize / 5) * 5;
+        int doorWSize = screenWidth/17;
+        doorWSize = (doorWSize / 5) * 5;
+
+        int doorHSize = screenHeight/17;
+        doorHSize = (doorHSize / 5) * 5;
 
         door = new Bitmap[5];
         door[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.door0), doorSize, doorSize, false);
+                getResources(), R.drawable.door0), doorWSize, doorHSize, false);
         door[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.door1), doorSize, doorSize, false);
+                getResources(), R.drawable.door1), doorWSize, doorHSize, false);
         door[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.door2), doorSize, doorSize, false);
+                getResources(), R.drawable.door2), doorWSize, doorHSize, false);
         door[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.door3), doorSize, doorSize, false);
+                getResources(), R.drawable.door3), doorWSize, doorHSize, false);
         door[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.door4), doorSize, doorSize, false);
+                getResources(), R.drawable.door4), doorWSize, doorHSize, false);
 
-        int bushSize = screenWidth/17;
-        bushSize = (bushSize / 5) * 5;
+        int bushWSize = screenWidth/17;
+        bushWSize = (bushWSize / 5) * 5;
+
+        int bushHSize = screenHeight/17;
+        bushHSize = (bushHSize / 5) * 5;
 
         bush = new Bitmap[1];
         bush[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.bush), bushSize, bushSize, false);
+                getResources(), R.drawable.bush), bushWSize, bushHSize, false);
 
-        int configSize = screenWidth/17;
-        configSize = (configSize / 5) * 5;
+        int configWSize = screenWidth/17;
+        configWSize = (configWSize / 5) * 5;
+
+        int configHSize = screenHeight/17;
+        configHSize = (configHSize / 5) * 5;
 
         config = new Bitmap[1];
         config[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.config), configSize, configSize, false);
+                getResources(), R.drawable.config), configWSize, configHSize, false);
 
-        int initialMenuSize = screenWidth/17;
-        initialMenuSize = (initialMenuSize / 5) * 5;
+        int initialMenuWSize = screenWidth/17;
+        initialMenuWSize = (initialMenuWSize / 5) * 5;
+
+        int initialMenuHSize = screenHeight/17;
+        initialMenuHSize = (initialMenuHSize / 5) * 5;
+
 
         initialMenu = new Bitmap[1];
         roof[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.initial_menu), initialMenuSize, initialMenuSize, false);
+                getResources(), R.drawable.initial_menu), initialMenuWSize, initialMenuHSize, false);
 
-        int lifeSize = screenWidth/17;
-        lifeSize = (lifeSize / 5) * 5;
+        int lifeWSize = screenWidth/17;
+        lifeWSize = (lifeWSize / 5) * 5;
+
+        int lifeHSize = screenHeight/17;
+        lifeHSize = (lifeHSize / 5) * 5;
 
         life = new Bitmap[1];
         life[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.life), lifeSize, lifeSize, false);
+                getResources(), R.drawable.life), lifeWSize, lifeHSize, false);
 
-        int spritesSinFondoSize = screenWidth/17;
-        spritesSinFondoSize = (spritesSinFondoSize / 5) * 5;
+        int spritesSinFondoWSize = screenWidth/17;
+        spritesSinFondoWSize = (spritesSinFondoWSize / 5) * 5;
+
+        int spritesSinFondoHSize = screenHeight/17;
+        spritesSinFondoHSize = (spritesSinFondoHSize / 5) * 5;
 
         spritesSinFondo = new Bitmap[1];
         spritesSinFondo[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
-                getResources(), R.drawable.sprites_sin_fondo), spritesSinFondoSize, spritesSinFondoSize, false);
+                getResources(), R.drawable.sprites_sin_fondo), spritesSinFondoWSize, spritesSinFondoHSize, false);
 
     }
 
