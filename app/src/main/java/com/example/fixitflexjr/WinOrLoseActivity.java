@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -27,7 +28,9 @@ public class WinOrLoseActivity extends Activity {
         s += "\n level : " + level;
         textView.setText(s);
 
-        textView.setOnClickListener(new View.OnClickListener() {
+        Button button = findViewById(R.id.continueButton);
+
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToGame();

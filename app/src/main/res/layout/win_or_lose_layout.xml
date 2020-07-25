@@ -3,18 +3,31 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@drawable/housebackground"
     android:weightSum="1">
 
+
     <TextView
+        android:id="@+id/winMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:textSize="30dp"
-        android:text="hiiii"
-        android:id="@+id/winMessage"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/white"/>
+        android:layout_marginTop="50dp"
+        android:text="hiiii"
+        android:textColor="#CEE7ED"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/continueButton"
+        android:layout_width="175dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="100dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/buttonbackgound1"
+        android:text="continue"
+        android:textColor="#CEE7ED"
+        android:textSize="17sp"
+        android:textStyle="bold" />
 
 
 </LinearLayout>

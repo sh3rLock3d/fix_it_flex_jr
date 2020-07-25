@@ -23,12 +23,13 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     private boolean canDraw = true;
 
     private Paint paint;
-    private Bitmap[] felixMovingRight, felixMovingLeft, felixNormalRight, felixNormalLeft, felixWin, felixFixingLeft, felixFixingRight, felixFalling, birdLeft, birdRight, brick,
+    private Bitmap[] felixMovingRight, felixMovingLeft, felixNormalRight, felixNormalLeft, felixWin, felixFixingLeft,
+            felixFixingRight, felixFalling, birdLeft, birdRight, brick,
             cake, cloud, niceLander, window, doubleDoor, glasses, bigWindow, door, flowerpot, roof,
             bush, config, initialMenu, life, spritesSinFondo;
 
     private Bitmap[] ralphClimbing, ralphDemolishing, ralphMoving;
-    private Bitmap building;
+    private Bitmap building, flower;
 
 
     int xPosFlex, yPosFlex;
@@ -130,6 +131,12 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
 
             }
         }
+        // sprites
+        canvas.drawBitmap(spritesSinFondo[0], (int) (-1 * screenWidth / 12.6), (int) (screenHeight / 40), paint);
+        // door
+        canvas.drawBitmap(door[0], (int) (screenWidth / 2.37), (int) (screenHeight - screenHeight / 6.2), paint);
+        // flower
+        canvas.drawBitmap(flower, (int) (screenWidth / 1.73), (int) (screenHeight - screenHeight / 6.05), paint);
 
     }
 
@@ -855,6 +862,8 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                 getResources(), R.drawable.felixfalling1), felixWSize, felixHSize, false);
 
 
+
+
         int ralphWSize = (int) (screenWidth / 4);
         ralphWSize = (ralphWSize / 5) * 5;
 
@@ -894,11 +903,21 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         building = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.building0), screenWidth, screenHeight, false);
 
+        int flowerWSize = (int) (screenWidth) / 3;
+        flowerWSize = (flowerWSize / 5) * 5;
+
+        int flowerHSize = (int) (screenHeight / 7);
+        flowerHSize = (flowerHSize / 5) * 5;
+
+        flower = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+                getResources(), R.drawable.flower), flowerWSize, flowerHSize, false);
+
         int birdWSize = screenWidth / 17;
         birdWSize = (birdWSize / 5) * 5;
 
         int birdHSize = screenHeight / 17;
         birdHSize = (birdHSize / 5) * 5;
+
 
         birdLeft = new Bitmap[2];
         birdLeft[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
@@ -1052,10 +1071,10 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         bigWindow[4] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.bigwindow4), bigWindowWSize, bigWindowHSize, false);
 
-        int doorWSize = screenWidth / 17;
+        int doorWSize = (int) (screenWidth / 6);
         doorWSize = (doorWSize / 5) * 5;
 
-        int doorHSize = screenHeight / 17;
+        int doorHSize = (int) (screenHeight / 8);
         doorHSize = (doorHSize / 5) * 5;
 
         door = new Bitmap[5];
@@ -1111,10 +1130,10 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         life[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.life), lifeWSize, lifeHSize, false);
 
-        int spritesSinFondoWSize = screenWidth / 17;
+        int spritesSinFondoWSize =(int) (screenWidth * 1.175);
         spritesSinFondoWSize = (spritesSinFondoWSize / 5) * 5;
 
-        int spritesSinFondoHSize = screenHeight / 17;
+        int spritesSinFondoHSize = (int) (screenHeight / 2.9);
         spritesSinFondoHSize = (spritesSinFondoHSize / 5) * 5;
 
         spritesSinFondo = new Bitmap[1];
@@ -1150,6 +1169,12 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                     int x = i * xDist + xThreshold, y = j * yDist + yThreshold;
                     locations[i][j][0] = x;
                     locations[i][j][1] = y;
+                }
+                if (j == 0) {
+                    locations[i][j][1] += (int) (screenHeight / 45);
+                }
+                if (j == 3) {
+                    locations[i][j][1] -= (int) (screenHeight / 45);
                 }
             }
         }
