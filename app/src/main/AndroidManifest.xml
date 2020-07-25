@@ -18,6 +18,7 @@
         </activity>
         <activity android:name=".HelpActivity"/>
         <activity android:name=".PlayActivity"/>
+        <activity android:name=".WinOrLoseActivity"/>
         <service android:name=".BackgroundMusicService"/>
     </application>
 

@@ -1,6 +1,7 @@
 package com.example.fixitflexjr;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,14 +11,16 @@ public class PlayActivity extends Activity {
     private SharedPreferences sharedPreferences;
     private DrawingView drawingView;
     private Globals globals;
+    private int level;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        drawingView = new DrawingView(this);
+        globals = Globals.getInstance();
+        level = globals.getLevel();
+        drawingView = new DrawingView(this, level);
         setContentView(drawingView);
         activity = this;
-        globals = Globals.getInstance();
         sharedPreferences = getSharedPreferences("info", MODE_PRIVATE);
         int temp = sharedPreferences.getInt("high_score",0);
         globals.setHighScore(temp);
@@ -45,6 +48,18 @@ public class PlayActivity extends Activity {
 
     public static PlayActivity getInstance() {
         return activity;
+    }
+
+    public void win(){
+        globals.wonLastGame = true;
+        Intent playIntent = new Intent(this, WinOrLoseActivity.class);
+        startActivity(playIntent);
+    }
+
+    public void lose(){
+        globals.wonLastGame = false;
+        Intent playIntent = new Intent(this, WinOrLoseActivity.class);
+        startActivity(playIntent);
     }
 
 }

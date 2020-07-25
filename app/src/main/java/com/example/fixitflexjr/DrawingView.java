@@ -50,7 +50,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     final Handler handler = new Handler();
     int lifeOfFlex;
 
-    public DrawingView(Context context) {
+    public DrawingView(Context context, int level) {
         super(context);
         holder = getHolder();
         holder.addCallback(this);
@@ -60,6 +60,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         screenWidth = metrics.widthPixels;
         screenHeight = metrics.heightPixels;
+        windowsLife = LevelInformations.getLevelInformation(level).clone();
 
         // initialize
         bricks = new ArrayList<>();
@@ -1122,13 +1123,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
 
     }
 
-    int[][] windowsLife = {
-            {0, 0, 0, 0},
-            {0, 0, 0, 0},
-            {0, 0, 0, 0},
-            {0, 0, 0, 0},
-            {0, 0, 0, 0}
-    };
+    int[][] windowsLife;
 
     int[][][] locations;
 
@@ -1161,13 +1156,12 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     }
 
     private void win() {
-
+        PlayActivity.getInstance().win();
     }
 
     private void lost() {
-
+        lifeOfFlex = 3;
+        windowsLife = LevelInformations.getLevelInformation(Globals.getInstance().getLevel()).clone();
+        PlayActivity.getInstance().lose();
     }
-
 }
-
-// todo use both bricks
