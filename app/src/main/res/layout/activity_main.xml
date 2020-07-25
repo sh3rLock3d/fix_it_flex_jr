@@ -33,8 +33,8 @@
             android:layout_marginBottom="5dp"
             android:textStyle="bold"
             android:textSize="17sp"
-            android:textColor="#113740"
-            android:background="@drawable/buttonbackgound"/>
+            android:textColor="#CEE7ED"
+            android:background="@drawable/buttonbackgound1"/>
 
         <Button
             android:layout_width="175dp"
@@ -44,8 +44,8 @@
             android:layout_marginBottom="5dp"
             android:textStyle="bold"
             android:textSize="17sp"
-            android:textColor="#113740"
-            android:background="@drawable/buttonbackgound"/>
+            android:textColor="#CEE7ED"
+            android:background="@drawable/buttonbackgound1"/>
 
         <Button
             android:layout_width="175dp"
@@ -55,8 +55,8 @@
             android:layout_marginBottom="5dp"
             android:textStyle="bold"
             android:textSize="17sp"
-            android:textColor="#113740"
-            android:background="@drawable/buttonbackgound"/>
+            android:textColor="#CEE7ED"
+            android:background="@drawable/buttonbackgound1"/>
         <Button
             android:layout_width="175dp"
             android:layout_height="65dp"
@@ -65,8 +65,8 @@
             android:layout_marginBottom="5dp"
             android:textStyle="bold"
             android:textSize="17sp"
-            android:textColor="#113740"
-            android:background="@drawable/buttonbackgound"/>
+            android:textColor="#CEE7ED"
+            android:background="@drawable/buttonbackgound1"/>
     </LinearLayout>
 
 </RelativeLayout>
