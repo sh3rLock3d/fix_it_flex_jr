@@ -3,17 +3,17 @@ package com.example.fixitflexjr;
 public class LevelInformations {
     private static final int[][] level1 = {
             {4, 3, 4, 3},
-            {3, 2, 4, 3},
+            {3, 4, 3, 2},
             {4, 3, 2, 4},
-            {1, 0, 4, 3},
-            {2, 4, 2, 3}
+            {4, 1, 0, 3},
+            {2, 3, 2, 4}
     };
 
     private static final int[][] level2 = {
             {2, 3, 4, 1},
             {3, 4, 0, 2},
-            {4, 2, 3, 4},
-            {0, 1, 2, 3},
+            {4, 2, 3, 0},
+            {1, 4, 2, 3},
             {4, 2, 3, 4}
     };
 

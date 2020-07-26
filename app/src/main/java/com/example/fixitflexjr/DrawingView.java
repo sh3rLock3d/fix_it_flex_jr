@@ -137,6 +137,10 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         canvas.drawBitmap(door[0], (int) (screenWidth / 2.37), (int) (screenHeight - screenHeight / 6.2), paint);
         // flower
         canvas.drawBitmap(flower, (int) (screenWidth / 1.73), (int) (screenHeight - screenHeight / 6.05), paint);
+        canvas.drawBitmap(flower, (int) (screenWidth / 10.5), (int) (screenHeight - screenHeight / 6.05), paint);
+        for (int i = 0; i < 14; i++) {
+            canvas.drawBitmap(flowerpot[0], (int) (screenWidth / 10.4 + i * 0.6 * screenWidth / 10.4 ), (int) (screenHeight - screenHeight / 5.35), paint);
+        }
 
     }
 
@@ -1036,7 +1040,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         int flowerpotWSize = screenWidth / 17;
         flowerpotWSize = (flowerpotWSize / 5) * 5;
 
-        int flowerpotHSize = screenHeight / 17;
+        int flowerpotHSize = screenHeight / 36;
         flowerpotHSize = (flowerpotHSize / 5) * 5;
 
         flowerpot = new Bitmap[1];
@@ -1080,13 +1084,13 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         door = new Bitmap[5];
         door[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.door0), doorWSize, doorHSize, false);
-        door[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+        door[1] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.door1), doorWSize, doorHSize, false);
-        door[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+        door[2] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.door2), doorWSize, doorHSize, false);
-        door[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+        door[3] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.door3), doorWSize, doorHSize, false);
-        door[0] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+        door[4] = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
                 getResources(), R.drawable.door4), doorWSize, doorHSize, false);
 
         int bushWSize = screenWidth / 17;

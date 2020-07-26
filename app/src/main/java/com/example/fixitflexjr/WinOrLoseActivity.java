@@ -24,8 +24,13 @@ public class WinOrLoseActivity extends Activity {
         }
 
         TextView textView = findViewById(R.id.winMessage);
-        String s = "you win ? " + win;
-        s += "\n level : " + level;
+        String s;
+        if (win) {
+            s = "you win";
+        } else {
+            s = "you lose";
+        }
+        s += "\nlevel : " + level;
         textView.setText(s);
 
         Button button = findViewById(R.id.continueButton);
