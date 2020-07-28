@@ -30,5 +30,12 @@
         android:textSize="17sp"
         android:textStyle="bold" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="154dp"
+        android:layout_height="214dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="60dp" />
+
 
 </LinearLayout>

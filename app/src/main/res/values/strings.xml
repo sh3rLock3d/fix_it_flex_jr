@@ -4,4 +4,5 @@
     <string name="help">How To Play</string>
     <string name="settingsLabel">Setting</string>
     <string name="ExitLabel">Exit</string>
+    <string name="help_message">Hi Guys \n Welcome to fix it flex jr game \n In this game you have to play against the saboteur Ralph and repair his sabotage so that the inhabitants of the city will be happy and proud of you.\n How to play now?\n To move in the direction you want to pull your finger in the desired direction, Also, to repair the windows of the building , go to the desired window and click on it several times.\n Finally, you should always be careful that the bricks do not hit you, and if you fix all the windows, you will go to the next level.</string>
 </resources>
