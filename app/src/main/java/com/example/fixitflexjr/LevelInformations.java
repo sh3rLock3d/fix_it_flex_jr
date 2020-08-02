@@ -49,15 +49,26 @@ public class LevelInformations {
     public static int[][] getLevelInformation(int level) {
         switch (level) {
             case 1:
-                return level1;
+                return copyOfArray(level1);
             case 2:
-                return level2;
+                return copyOfArray(level2);
             case 3:
-                return level3;
+                return copyOfArray(level3);
             case 4:
-                return level4;
+                return copyOfArray(level4);
             default:
-                return level5;
+                return copyOfArray(level5);
         }
+    }
+
+
+    private static int[][] copyOfArray(int[][] original){
+        int[][] copy = new int[5][4];
+        for (int i = 0; i < original.length; i ++) {
+            for (int j = 0; j < original[0].length; j ++) {
+                copy[i][j] = original[i][j];
+            }
+        }
+        return copy;
     }
 }

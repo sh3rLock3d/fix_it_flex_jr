@@ -61,7 +61,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         screenWidth = metrics.widthPixels;
         screenHeight = metrics.heightPixels;
-        windowsLife = LevelInformations.getLevelInformation(level).clone();
+        windowsLife = LevelInformations.getLevelInformation(level);
 
         // initialize
         bricks = new ArrayList<>();
@@ -1141,7 +1141,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
 
     }
 
-    int[][] windowsLife;
+    public int[][] windowsLife;
 
     int[][][] locations;
 
@@ -1184,8 +1184,6 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     }
 
     private void lost() {
-        lifeOfFlex = 3;
-        windowsLife = LevelInformations.getLevelInformation(Globals.getInstance().getLevel()).clone();
         PlayActivity.getInstance().lose();
     }
 }

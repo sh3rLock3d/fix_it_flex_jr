@@ -51,12 +51,14 @@ public class PlayActivity extends Activity {
     }
 
     public void win(){
+        finish();
         globals.wonLastGame = true;
         Intent playIntent = new Intent(this, WinOrLoseActivity.class);
         startActivity(playIntent);
     }
 
     public void lose(){
+        finish();
         globals.wonLastGame = false;
         Intent playIntent = new Intent(this, WinOrLoseActivity.class);
         startActivity(playIntent);

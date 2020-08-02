@@ -88,6 +88,7 @@ public class WinOrLoseActivity extends Activity {
     }
 
     public void goToGame(){
+        finish();
         Intent playIntent = new Intent(this, PlayActivity.class);
         startActivity(playIntent);
     }
