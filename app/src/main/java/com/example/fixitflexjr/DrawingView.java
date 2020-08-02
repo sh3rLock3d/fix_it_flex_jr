@@ -84,7 +84,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         xPosRalph = screenWidth / 2;
         yPosRalph = screenHeight / 6;
         ralphAction = RalphAction.moving;
-        ralphDest = (new Random()).nextInt(screenWidth - ralphMoving[0].getWidth());
+        ralphDest = getRandomDestForRalph();
 
 
         Log.i("info", "Constructor");
@@ -142,6 +142,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
             canvas.drawBitmap(flowerpot[0], (int) (screenWidth / 10.4 + i * 0.6 * screenWidth / 10.4 ), (int) (screenHeight - screenHeight / 5.35), paint);
         }
 
+
     }
 
     // flex
@@ -149,22 +150,6 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     private int flexMovingDistance;
 
     public void moveFlex(Canvas canvas) {
-        /*
-        switch (nextDirection){
-            case 0:
-                break;
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-        }
-         */
         // todo there is duplicate code clean it later
         MediaPlayer actionSong;
         switch (fLexAction) {
@@ -352,6 +337,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                     yFlexDest = 3;
                     xPosFlex = locations[3][3][0];
                     yPosFlex = locations[3][3][1];
+                    bricks.clear();
                 }
                 break;
             case jumpingLeft:
@@ -516,11 +502,22 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                 break;
             case demolishing:
                 if (currentRalphFrame == ralphDemolishing.length - 1) {
-                    ralphDest = (new Random()).nextInt(screenWidth - ralphMoving[0].getWidth());
+                    ralphDest = getRandomDestForRalph();
                     ralphAction = RalphAction.moving;
                     currentRalphFrame = 0;
                 }
         }
+    }
+
+    boolean randomDestForRalphIsInFirstHalf = true;
+    private int getRandomDestForRalph() {
+        int x1 = screenWidth/2;
+        if (randomDestForRalphIsInFirstHalf) {
+            x1 = 0;
+        }
+        randomDestForRalphIsInFirstHalf = !randomDestForRalphIsInFirstHalf;
+        return (new Random()).nextInt((screenWidth / 2) - ralphMoving[0].getWidth()) + x1;
+
     }
 
     private void drawRalph(Canvas canvas) {
@@ -636,8 +633,6 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
             g.setHighScore(currentScore);
         }
 
-
-        // todo draw life bitmap
         for (int i = 0; i < lifeOfFlex; i++) {
             int x = screenWidth - (blockWSize * i / 3 + 110) - life[0].getWidth();
             canvas.drawBitmap(life[0], x, blockHSize / 4, paint);
