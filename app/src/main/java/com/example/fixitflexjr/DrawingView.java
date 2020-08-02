@@ -121,7 +121,6 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     }
 
     public void drawMap(Canvas canvas) {
-        // todo add some graphics
         canvas.drawBitmap(building, 0, 0, paint);
         // windows
         for (int i = 0; i < windowsLife.length; i++) {
@@ -150,7 +149,6 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     private int flexMovingDistance;
 
     public void moveFlex(Canvas canvas) {
-        // todo there is duplicate code clean it later
         MediaPlayer actionSong;
         switch (fLexAction) {
             case movingRight:
