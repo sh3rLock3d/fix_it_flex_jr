@@ -24,6 +24,7 @@ public class MainActivity extends Activity {
         startActivity(playIntent);
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,10 +53,12 @@ public class MainActivity extends Activity {
     }
 
     public void showSettingScreen(View view) {
-
+        Intent settingIntent = new Intent(this, SettingActivity.class);
+        startActivity(settingIntent);
     }
 
     public void Exit(View view) {
         finish();
     }
+
 }
