@@ -697,7 +697,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
             return;
         }
 
-        if (Math.abs(yDiff) < 20 && Math.abs(xDiff) < 20) {
+        if (Math.abs(yDiff) < 30 && Math.abs(xDiff) < 30) {
             //pressed
             nextDirection = 5;
             return;
