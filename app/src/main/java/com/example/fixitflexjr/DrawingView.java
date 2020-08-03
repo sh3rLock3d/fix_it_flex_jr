@@ -1,6 +1,7 @@
 package com.example.fixitflexjr;
 
 import android.content.Context;
+import android.drm.DrmStore;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -149,7 +150,7 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
     private int flexMovingDistance;
 
     public void moveFlex(Canvas canvas) {
-        MediaPlayer actionSong;
+
         switch (fLexAction) {
             case movingRight:
                 switch (nextDirection) {
@@ -197,11 +198,8 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                         currentFelixFrame = 0;
                         nextDirection = 4;
                         flexMovingDistance = getFlexDistance(0);
-                        actionSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.jumpsound);
-                        actionSong.setVolume(100, 100);
-                        actionSong.setLooping(false);
                         if (MainActivity.isCheckSounds()) {
-                            actionSong.start();
+                            ActionSounds.jumpSound.start();
                         }
                         break;
                     case 1:
@@ -215,11 +213,9 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                         currentFelixFrame = 0;
                         nextDirection = 4;
                         flexMovingDistance = getFlexDistance(2);
-                        actionSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.jumpsound);
-                        actionSong.setVolume(100, 100);
-                        actionSong.setLooping(false);
+
                         if (MainActivity.isCheckSounds()) {
-                            actionSong.start();
+                            ActionSounds.jumpSound.start();
                         }
                         break;
                     case 3:
@@ -244,11 +240,9 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                         currentFelixFrame = 0;
                         nextDirection = 4;
                         flexMovingDistance = getFlexDistance(0);
-                        actionSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.jumpsound);
-                        actionSong.setVolume(100, 100);
-                        actionSong.setLooping(false);
+
                         if (MainActivity.isCheckSounds()) {
-                            actionSong.start();
+                            ActionSounds.jumpSound.start();
                         }
                         break;
                     case 1:
@@ -261,11 +255,8 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                         currentFelixFrame = 0;
                         nextDirection = 4;
                         flexMovingDistance = getFlexDistance(2);
-                        actionSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.jumpsound);
-                        actionSong.setVolume(100, 100);
-                        actionSong.setLooping(false);
                         if (MainActivity.isCheckSounds()) {
-                            actionSong.start();
+                            ActionSounds.jumpSound.start();
                         }
                         break;
                     case 3:
@@ -388,11 +379,9 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         if (windowsLife[x][y] == window.length) {
             windowsLife[x][y] -= 1;
         }
-        MediaPlayer gameSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.fixsound);
-        gameSong.setVolume(100, 100);
-        gameSong.setLooping(false);
+
         if (MainActivity.isCheckSounds()) {
-            gameSong.start();
+            ActionSounds.fixSound.start();
         }
     }
 
@@ -500,11 +489,9 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                     ralphAction = RalphAction.demolishing;
                     currentRalphFrame = 0;
 
-                    MediaPlayer actionSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.smashsound);
-                    actionSong.setVolume(100, 100);
-                    actionSong.setLooping(false);
+
                     if (MainActivity.isCheckSounds()) {
-                        actionSong.start();
+                        ActionSounds.smashSound.start();
                     }
                 }
                 break;
@@ -591,11 +578,9 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
             if (lifeOfFlex == 0) {
                 lost();
             } else {
-                MediaPlayer actionSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.loselifesound);
-                actionSong.setVolume(100, 100);
-                actionSong.setLooping(false);
+
                 if (MainActivity.isCheckSounds()) {
-                    actionSong.start();
+                    ActionSounds.loseLifeSound.start();
                 }
             }
         }
