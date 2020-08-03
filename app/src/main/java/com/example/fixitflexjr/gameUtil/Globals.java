@@ -1,6 +1,6 @@
-package com.example.fixitflexjr;
+package com.example.fixitflexjr.gameUtil;
 
-public class Globals{
+public class Globals {
     private static Globals instance;
     private static int level = 1;
     public boolean wonLastGame;
@@ -8,7 +8,8 @@ public class Globals{
     private int highScore;
 
     // Restrict the constructor from being instantiated
-    private Globals(){}
+    private Globals() {
+    }
 
     public int getLevel() {
         return level;
@@ -18,16 +19,17 @@ public class Globals{
         Globals.level += 1;
     }
 
-    public void setHighScore(int newScore){
-        this.highScore =newScore;
+    public void setHighScore(int newScore) {
+        this.highScore = newScore;
     }
-    public int getHighScore(){
+
+    public int getHighScore() {
         return this.highScore;
     }
 
-    public static synchronized Globals getInstance(){
-        if(instance==null){
-            instance=new Globals();
+    public static synchronized Globals getInstance() {
+        if (instance == null) {
+            instance = new Globals();
         }
         return instance;
     }

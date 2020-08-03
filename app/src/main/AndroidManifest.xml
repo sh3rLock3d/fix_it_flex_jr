@@ -18,9 +18,8 @@
         </activity>
         <activity android:name=".HelpActivity"/>
         <activity android:name=".PlayActivity"/>
-        <activity android:name=".WinOrLoseActivity"/>
+        <activity android:name=".gameUtil.WinOrLoseActivity"/>
         <activity android:name=".SettingActivity"/>
-        <service android:name=".BackgroundMusicService"/>
     </application>
 
 </manifest>

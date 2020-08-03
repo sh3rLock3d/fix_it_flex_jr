@@ -6,23 +6,25 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.fixitflexjr.gameUtil.Globals;
+import com.example.fixitflexjr.gameUtil.WinOrLoseActivity;
+
 public class PlayActivity extends Activity {
     static PlayActivity activity;
     private SharedPreferences sharedPreferences;
     private DrawingView drawingView;
     private Globals globals;
-    private int level;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         globals = Globals.getInstance();
-        level = globals.getLevel();
+        int level = globals.getLevel();
         drawingView = new DrawingView(this, level);
         setContentView(drawingView);
         activity = this;
         sharedPreferences = getSharedPreferences("info", MODE_PRIVATE);
-        int temp = sharedPreferences.getInt("high_score",0);
+        int temp = sharedPreferences.getInt("high_score", 0);
         globals.setHighScore(temp);
     }
 
@@ -52,14 +54,14 @@ public class PlayActivity extends Activity {
         return activity;
     }
 
-    public void win(){
+    public void win() {
         finish();
         globals.wonLastGame = true;
         Intent playIntent = new Intent(this, WinOrLoseActivity.class);
         startActivity(playIntent);
     }
 
-    public void lose(){
+    public void lose() {
         finish();
         globals.wonLastGame = false;
         Intent playIntent = new Intent(this, WinOrLoseActivity.class);

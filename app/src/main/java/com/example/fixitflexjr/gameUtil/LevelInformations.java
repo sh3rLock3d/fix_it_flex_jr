@@ -1,4 +1,4 @@
-package com.example.fixitflexjr;
+package com.example.fixitflexjr.gameUtil;
 
 public class LevelInformations {
     private static final int[][] level1 = {
@@ -44,7 +44,8 @@ public class LevelInformations {
     };
 
 
-    private LevelInformations(){}
+    private LevelInformations() {
+    }
 
     public static int[][] getLevelInformation(int level) {
         switch (level) {
@@ -62,12 +63,10 @@ public class LevelInformations {
     }
 
 
-    private static int[][] copyOfArray(int[][] original){
+    private static int[][] copyOfArray(int[][] original) {
         int[][] copy = new int[5][4];
-        for (int i = 0; i < original.length; i ++) {
-            for (int j = 0; j < original[0].length; j ++) {
-                copy[i][j] = original[i][j];
-            }
+        for (int i = 0; i < original.length; i++) {
+            System.arraycopy(original[i], 0, copy[i], 0, original[0].length);
         }
         return copy;
     }
