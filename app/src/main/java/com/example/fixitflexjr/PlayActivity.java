@@ -42,7 +42,9 @@ public class PlayActivity extends Activity {
         Log.i("info", "onResume");
         super.onResume();
         drawingView.resume();
-        MainActivity.getGameSong().start();
+        if (MainActivity.isCheckMusic()) {
+            MainActivity.getGameSong().start();
+        }
 
     }
 

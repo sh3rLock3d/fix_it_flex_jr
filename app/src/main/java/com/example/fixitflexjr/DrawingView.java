@@ -200,7 +200,9 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                         actionSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.jumpsound);
                         actionSong.setVolume(100, 100);
                         actionSong.setLooping(false);
-                        actionSong.start();
+                        if (MainActivity.isCheckSounds()) {
+                            actionSong.start();
+                        }
                         break;
                     case 1:
                         fLexAction = FLexAction.movingRight;
@@ -216,7 +218,9 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                         actionSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.jumpsound);
                         actionSong.setVolume(100, 100);
                         actionSong.setLooping(false);
-                        actionSong.start();
+                        if (MainActivity.isCheckSounds()) {
+                            actionSong.start();
+                        }
                         break;
                     case 3:
                         fLexAction = FLexAction.normalLeft;
@@ -243,7 +247,9 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                         actionSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.jumpsound);
                         actionSong.setVolume(100, 100);
                         actionSong.setLooping(false);
-                        actionSong.start();
+                        if (MainActivity.isCheckSounds()) {
+                            actionSong.start();
+                        }
                         break;
                     case 1:
                         fLexAction = FLexAction.normalRight;
@@ -258,7 +264,9 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                         actionSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.jumpsound);
                         actionSong.setVolume(100, 100);
                         actionSong.setLooping(false);
-                        actionSong.start();
+                        if (MainActivity.isCheckSounds()) {
+                            actionSong.start();
+                        }
                         break;
                     case 3:
                         fLexAction = FLexAction.movingLeft;
@@ -383,7 +391,9 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
         MediaPlayer gameSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.fixsound);
         gameSong.setVolume(100, 100);
         gameSong.setLooping(false);
-        gameSong.start();
+        if (MainActivity.isCheckSounds()) {
+            gameSong.start();
+        }
     }
 
     int xflexDest, yFlexDest;
@@ -493,7 +503,9 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                     MediaPlayer actionSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.smashsound);
                     actionSong.setVolume(100, 100);
                     actionSong.setLooping(false);
-                    actionSong.start();
+                    if (MainActivity.isCheckSounds()) {
+                        actionSong.start();
+                    }
                 }
                 break;
             case climbing:
@@ -582,7 +594,9 @@ public class DrawingView extends SurfaceView implements Runnable, SurfaceHolder.
                 MediaPlayer actionSong = MediaPlayer.create(PlayActivity.getInstance(), R.raw.loselifesound);
                 actionSong.setVolume(100, 100);
                 actionSong.setLooping(false);
-                actionSong.start();
+                if (MainActivity.isCheckSounds()) {
+                    actionSong.start();
+                }
             }
         }
     }

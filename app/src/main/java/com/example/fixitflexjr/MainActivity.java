@@ -11,6 +11,33 @@ import android.view.View;
 
 public class MainActivity extends Activity {
     private static MediaPlayer gameSong;
+    private static boolean checkMusic = true;
+    private static boolean checkSounds = true;
+    private static boolean checkNotifications = false;
+
+    public static boolean isCheckMusic() {
+        return checkMusic;
+    }
+
+    public static void setCheckMusic(boolean checkMusic) {
+        MainActivity.checkMusic = checkMusic;
+    }
+
+    public static boolean isCheckSounds() {
+        return checkSounds;
+    }
+
+    public static void setCheckSounds(boolean checkSounds) {
+        MainActivity.checkSounds = checkSounds;
+    }
+
+    public static boolean isCheckNotifications() {
+        return checkNotifications;
+    }
+
+    public static void setCheckNotifications(boolean checkNotifications) {
+        MainActivity.checkNotifications = checkNotifications;
+    }
 
     // Method to start activity for Help button
     public void showHelpScreen(View view) {
@@ -32,7 +59,9 @@ public class MainActivity extends Activity {
         gameSong = MediaPlayer.create(this, R.raw.fix_it_felix_jr_music);
         gameSong.setVolume(100, 100);
         gameSong.setLooping(true);
-        gameSong.start();
+        if (isCheckMusic()) {
+            gameSong.start();
+        }
     }
 
     public static MediaPlayer getGameSong() {
@@ -49,7 +78,9 @@ public class MainActivity extends Activity {
     public void onResume() {
         Log.i("info", "MainActivity onResume");
         super.onResume();
-        gameSong.start();
+        if (isCheckMusic()) {
+            gameSong.start();
+        }
     }
 
     public void showSettingScreen(View view) {
